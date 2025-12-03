@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-12-03T07:32:03.345Z",
+  "stats": [
+    {
+      "file": "data1.txt",
+      "lines": 5,
+      "words": 9,
+      "chars": 48,
+      "executionTimeMs": 2,
+      "memoryMB": 3.96
+    },
+    {
+      "file": "data2.txt",
+      "lines": 5,
+      "words": 9,
+      "chars": 53,
+      "executionTimeMs": 2,
+      "memoryMB": 3.96
+    },
+    {
+      "file": "data3.txt",
+      "lines": 5,
+      "words": 9,
+      "chars": 43,
+      "executionTimeMs": 2,
+      "memoryMB": 3.97
+    }
+  ],
+  "uniqueOutputs": []
+}
