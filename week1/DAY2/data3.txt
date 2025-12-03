@@ -1,0 +1,4 @@
+Third file
+Test CLI tool
+Test CLI tool
+End
