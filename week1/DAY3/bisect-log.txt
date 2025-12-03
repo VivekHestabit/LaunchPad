@@ -1,0 +1,11 @@
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [956793b66b1098590de8afad97395e9809d022fa] Commit 10: added print 10
+git bisect bad 956793b66b1098590de8afad97395e9809d022fa
+# status: waiting for good commit(s), bad commit known
+# good: [e6fc7263e1a282e822bfae37f44488c1838d092a] Initial commit of Luanchpad week1 DAY1
+git bisect good e6fc7263e1a282e822bfae37f44488c1838d092a
+# bad: [192ea7579bd50b4925be9f97b0ae90cafac3fb83] commit : 5 error added
+git bisect bad 192ea7579bd50b4925be9f97b0ae90cafac3fb83
+# good: [5806fc22a0f86276a34aad3afdd6b8c47446455c] 2nd commit
+git bisect good 5806fc22a0f86276a34aad3afdd6b8c47446455c
