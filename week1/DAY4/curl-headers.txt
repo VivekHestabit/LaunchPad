@@ -1,0 +1,10 @@
+-> Day 4 — cURL Headers Extraction
+
+-> Command:
+curl -v https://api.github.com/users/octocat
+
+-> Extracted Headers:
+Server: GitHub.com
+< etag: W/"f73a13b214b353ffac2735513da023cf171cfba3e0133d588d178aa381e63ab5"
+X-RateLimit-Remaining: 58
+
