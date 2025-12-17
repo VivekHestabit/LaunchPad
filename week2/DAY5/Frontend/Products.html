@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Products</title>
   <link rel="stylesheet" href="CSS/style.css" />
 </head>
+
 <body>
 
   <header class="navbar">
-    <input type="text" id="search" placeholder="Search products..." class="inpt" />
+    <h1>E-COMMERCE SITE : </h1>
+    <div class="container">
+      <input type="text" id="search" placeholder="Search products..." class="inpt" />
 
-    <select id="sort">
-      <option value="">Sort by</option>
-      <option value="high">Price: High → Low</option>
-      <option value="low">Price: Low → High</option>
-    </select>
+      <select id="sort">
+        <option value="">Sort by</option>
+        <option value="high">Price: High → Low</option>
+        <option value="low">Price: Low → High</option>
+      </select>
+    </div>
   </header>
 
   <div class="products" id="products"></div>
 
   <script src="JS/Product.js"></script>
 </body>
+
 </html>

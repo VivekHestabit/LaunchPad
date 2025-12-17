@@ -49,6 +49,10 @@ body {
   border-radius: 10px;
 }
 
+.container{
+  margin-left : auto;
+}
+
 .navbar input,
 .navbar select {
   height: 40px;
