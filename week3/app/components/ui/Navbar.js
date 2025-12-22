@@ -32,7 +32,6 @@ export default function Navbar() {
                 <img height="15px" width="15px" src="/Settings.svg" alt="" />
                 <img height="15px" width="15px" src="/Bell.svg" alt="" />
             </div>
-            {/* <input type="text" /> */}
         </header>
     );
 }

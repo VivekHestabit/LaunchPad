@@ -1,8 +1,9 @@
-import { notFound } from "next/navigation";
-
-
-export default async function Home() {
-  return (
-    <div>page</div>
-  )
+export default function Page(){
+    return (
+        <>
+            <div className="bg-amber-50">
+                This is the Main page
+            </div>
+        </>
+    )
 }

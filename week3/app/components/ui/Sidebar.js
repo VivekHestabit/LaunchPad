@@ -5,16 +5,21 @@ import { usePathname } from "next/navigation";
 import { HelpCircle } from "lucide-react";
 
 export default function Sidebar() {
+  const handleClick = () =>{
+    window.location.href = "/dashboard";
+  }
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-screen flex flex-col p-4">
+    <aside className="w-64 h-screen flex flex-col p-4 shrink-0">
       
       {/* TOP */}
       <div>
         {/* Logo */}
         <div className="flex items-center gap-2 mb-10 font-bold text-[#2D3748]">
-          <img src="/icon.svg" alt="logo" />
+          <img src="/icon.svg" alt="logo" onClick={()=>{
+            handleClick()
+          }}/>
           <span className="text-sm font-semibold">
             PURITY UI DASHBOARD
           </span>
@@ -94,7 +99,7 @@ export default function Sidebar() {
 
 function MenuItem({ href, icon, text, active }) {
   return (
-    <Link href={href}>
+    <Link href={href} className=" block transition-transform duration-100 ease-out hover:-translate-y-1">
       <div
         className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer mb-1
         ${active
@@ -108,3 +113,5 @@ function MenuItem({ href, icon, text, active }) {
     </Link>
   );
 }
+
+
