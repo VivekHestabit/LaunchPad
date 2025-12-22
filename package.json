@@ -20,6 +20,12 @@
   "homepage": "https://github.com/VivekHestabit/LaunchPad#readme",
   "devDependencies": {
     "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.7.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,html,css,scss,json,md}": [
+      "prettier --check"
+    ]
   }
 }

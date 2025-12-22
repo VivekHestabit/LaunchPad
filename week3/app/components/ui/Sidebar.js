@@ -1,28 +1,29 @@
-'use client';
+'use client'; // if we want to use a hook we  have to import this : 'use-client'
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { HelpCircle } from "lucide-react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { HelpCircle } from 'lucide-react';
 
 export default function Sidebar() {
-  const handleClick = () =>{
-    window.location.href = "/dashboard";
-  }
+  const handleClick = () => {
+    window.location.href = '/';
+  };
   const pathname = usePathname();
 
   return (
     <aside className="w-64 h-screen flex flex-col p-4 shrink-0">
-      
       {/* TOP */}
       <div>
         {/* Logo */}
         <div className="flex items-center gap-2 mb-10 font-bold text-[#2D3748]">
-          <img src="/icon.svg" alt="logo" onClick={()=>{
-            handleClick()
-          }}/>
-          <span className="text-sm font-semibold">
-            PURITY UI DASHBOARD
-          </span>
+          <img
+            src="/icon.svg"
+            alt="logo"
+            onClick={() => {
+              handleClick();
+            }}
+          />
+          <span className="text-sm font-semibold">PURITY UI DASHBOARD</span>
         </div>
 
         {/* MAIN MENU */}
@@ -30,28 +31,28 @@ export default function Sidebar() {
           href="/dashboard"
           icon={<img src="/Home.svg" width="15" height="15" />}
           text="Dashboard"
-          active={pathname === "/dashboard"}
+          active={pathname === '/dashboard'}
         />
 
         <MenuItem
-          href="/tables"
+          href="/Tables"
           icon={<img src="/chart.svg" width="15" height="15" />}
           text="Tables"
-          active={pathname === "/tables"}
+          active={pathname === '/Tables'}
         />
 
         <MenuItem
           href="/billing"
           icon={<img src="/default.svg" width="15" height="15" />}
           text="Billing"
-          active={pathname === "/billing"}
+          active={pathname === '/billing'}
         />
 
         <MenuItem
           href="/rtl"
           icon={<img src="/default1.png" width="15" height="15" />}
           text="RTL"
-          active={pathname === "/rtl"}
+          active={pathname === '/rtl'}
         />
 
         {/* ACCOUNT PAGES */}
@@ -60,24 +61,24 @@ export default function Sidebar() {
         </p>
 
         <MenuItem
-          href="/profile"
+          href="/dashboard/profile"
           icon={<img src="/Person.svg" width="15" height="15" />}
           text="Profile"
-          active={pathname === "/profile"}
+          active={pathname === '/dashboard/profile'}
         />
 
         <MenuItem
           href="/signin"
           icon={<img src="/Page.svg" width="15" height="15" />}
           text="Sign In"
-          active={pathname === "/signin"}
+          active={pathname === '/signin'}
         />
 
         <MenuItem
           href="/signup"
           icon={<img src="/sharp.svg" width="15" height="15" />}
           text="Sign Up"
-          active={pathname === "/signup"}
+          active={pathname === '/signup'}
         />
       </div>
 
@@ -85,26 +86,27 @@ export default function Sidebar() {
       <div className="bg-teal-400 rounded-xl p-4 text-white mt-6">
         <HelpCircle size={20} />
         <p className="mt-2 font-semibold">Need help?</p>
-        <p className="text-sm opacity-90">
-          Please check our docs
-        </p>
+        <p className="text-sm opacity-90">Please check our docs</p>
         <button className="mt-4 bg-white text-teal-500 w-full py-2 rounded-lg text-sm font-semibold">
           DOCUMENTATION
         </button>
       </div>
-
     </aside>
   );
 }
 
 function MenuItem({ href, icon, text, active }) {
   return (
-    <Link href={href} className=" block transition-transform duration-100 ease-out hover:-translate-y-1">
+    <Link
+      href={href}
+      className=" block transition-transform duration-100 ease-out hover:-translate-y-1"
+    >
       <div
         className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer mb-1
-        ${active
-          ? "bg-teal-100 text-teal-600"
-          : "text-gray-600 hover:bg-gray-100"
+        ${
+          active
+            ? 'bg-teal-100 text-teal-600'
+            : 'text-gray-600 hover:bg-gray-100'
         }`}
       >
         {icon}
@@ -113,5 +115,3 @@ function MenuItem({ href, icon, text, active }) {
     </Link>
   );
 }
-
-

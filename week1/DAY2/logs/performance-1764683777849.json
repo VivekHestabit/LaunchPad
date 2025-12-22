@@ -26,7 +26,5 @@
       "memoryMB": 4.03
     }
   ],
-  "uniqueOutputs": [
-    "output/unique-data1.txt"
-  ]
+  "uniqueOutputs": ["output/unique-data1.txt"]
 }

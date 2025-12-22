@@ -25,3 +25,5 @@ fi
 
 echo "✅ Pre-commit checks passed"
 
+npx lint-staged
+

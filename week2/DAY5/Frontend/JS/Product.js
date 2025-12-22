@@ -1,22 +1,22 @@
-const productsContainer = document.getElementById("products");
-const searchInput = document.getElementById("search");
-const sortSelect = document.getElementById("sort");
+const productsContainer = document.getElementById('products');
+const searchInput = document.getElementById('search');
+const sortSelect = document.getElementById('sort');
 
 let productsData = [];
 
-fetch("https://dummyjson.com/products")
-  .then(res => res.json())
-  .then(data => {
+fetch('https://dummyjson.com/products')
+  .then((res) => res.json())
+  .then((data) => {
     productsData = data.products;
     renderProducts(productsData);
   });
 
 function renderProducts(products) {
-  productsContainer.innerHTML = "";
+  productsContainer.innerHTML = '';
 
-  products.forEach(product => {
-    const card = document.createElement("div");
-    card.className = "card";
+  products.forEach((product) => {
+    const card = document.createElement('div');
+    card.className = 'card';
 
     card.innerHTML = `
       <img height = "0" width ="0" src="${product.thumbnail}" />
@@ -28,25 +28,24 @@ function renderProducts(products) {
   });
 }
 
-
-searchInput.addEventListener("input", () => {
+searchInput.addEventListener('input', () => {
   const value = searchInput.value.toLowerCase();
 
-  const filtered = productsData.filter(p =>
+  const filtered = productsData.filter((p) =>
     p.title.toLowerCase().includes(value)
   );
 
   renderProducts(filtered);
 });
 
-sortSelect.addEventListener("change", () => {
+sortSelect.addEventListener('change', () => {
   let sorted = [...productsData];
 
-  if (sortSelect.value === "high") {
+  if (sortSelect.value === 'high') {
     sorted.sort((a, b) => b.price - a.price);
   }
 
-  if (sortSelect.value === "low") {
+  if (sortSelect.value === 'low') {
     sorted.sort((a, b) => a.price - b.price);
   }
 

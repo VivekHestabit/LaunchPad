@@ -1,12 +1,12 @@
-import Card from "../ui/Card";
+import Card from '../ui/Card';
 
 export default function RightMiddleCard() {
   return (
-    <Card className="h-[290.5px] w-137.5 p-0 overflow-hidden">
+    <Card className="h-[290.5px] w-137.5 p-0 overflow-hidden transition-transform duration-200 hover:-translate-y-1">
       <div
-        className="relative h-full p-6 bg-cover bg-center rounded-xl"
+        className="relative h-full p-6 bg-cover bg-center rounded-xl "
         style={{
-          backgroundImage: "url('/SecCard.jpg')"
+          backgroundImage: "url('/SecCard.jpg')",
         }}
       >
         <div className="absolute top-6 left-6 text-left">

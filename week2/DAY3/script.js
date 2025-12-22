@@ -1,11 +1,11 @@
-fetch("./Data/data.json")
-  .then(response => response.json())
-  .then(data => {
-    const container = document.getElementById("accordionContainer");
+fetch('./Data/data.json')
+  .then((response) => response.json())
+  .then((data) => {
+    const container = document.getElementById('accordionContainer');
 
     data.forEach((item, index) => {
-      const card = document.createElement("div");
-      card.classList.add("accordion-item");
+      const card = document.createElement('div');
+      card.classList.add('accordion-item');
 
       card.innerHTML = `
         <div class="accordion-header">
@@ -17,21 +17,21 @@ fetch("./Data/data.json")
         </div>
       `;
 
+      card.querySelector('.accordion-header').addEventListener('click', () => {
+        const isActive = card.classList.contains('active');
 
-      card.querySelector(".accordion-header").addEventListener("click", () => {
-        const isActive = card.classList.contains("active");
-
-        document.querySelectorAll(".accordion-item")
-          .forEach(item => item.classList.remove("active"));
+        document
+          .querySelectorAll('.accordion-item')
+          .forEach((item) => item.classList.remove('active'));
 
         if (!isActive) {
-          card.classList.add("active");
-          card.querySelector(".icon").textContent = "-";
+          card.classList.add('active');
+          card.querySelector('.icon').textContent = '-';
         }
 
-        document.querySelectorAll(".accordion-item").forEach(item => {
-          const icon = item.querySelector(".icon");
-          icon.textContent = item.classList.contains("active") ? "-" : "+";
+        document.querySelectorAll('.accordion-item').forEach((item) => {
+          const icon = item.querySelector('.icon');
+          icon.textContent = item.classList.contains('active') ? '-' : '+';
         });
       });
 

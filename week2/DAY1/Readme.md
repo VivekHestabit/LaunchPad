@@ -3,10 +3,12 @@
 This document summarizes key learnings about semantic HTML tags and how to use them effectively.
 
 ## Purpose
+
 - Convey meaning to browsers, developers, and assistive technologies.
 - Improve accessibility, SEO, and code maintainability.
 
 ## Common semantic elements
+
 - header — site or section header (branding, headings, global nav).
 - nav — primary navigation links.
 - main — primary page content (one per page).
@@ -20,6 +22,7 @@ This document summarizes key learnings about semantic HTML tags and how to use t
 - time, mark — temporal data and highlighted text.
 
 ## Best practices
+
 - Use elements for semantics, not just styling.
 - Only one <main> per page.
 - Keep heading order logical (h1 → h2 → h3).
