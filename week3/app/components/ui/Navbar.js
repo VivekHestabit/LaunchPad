@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const pageName = pathname.split('/')[1] || 'Dashboard';
+  const pageName = pathname.split('/').pop() || 'Dashboard';
   return (
     <header className="h-16 border-b flex items-center justify-between px-6">
       <div>
@@ -35,13 +35,5 @@ export default function Navbar() {
         <img height="15px" width="15px" src="/Bell.svg" alt="" />
       </div>
     </header>
-  );
-}
-
-function IconBox({ children }) {
-  return (
-    <div className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 cursor-pointer">
-      {children}
-    </div>
   );
 }

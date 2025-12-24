@@ -106,7 +106,7 @@ function MenuItem({ href, icon, text, active }) {
         ${
           active
             ? 'bg-teal-100 text-teal-600'
-            : 'text-gray-600 hover:bg-gray-100'
+            : 'text-gray-600 hover:bg-[#FFFFFF]'
         }`}
       >
         {icon}

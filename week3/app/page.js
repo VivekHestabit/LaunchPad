@@ -4,7 +4,6 @@ import { Layout, Zap, Shield, ArrowRight } from 'lucide-react';
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans">
-      {/* SIMPLE NAVBAR */}
       <nav className="border-b border-gray-200 py-3">
         <div className="max-w-5xl mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-lg">
@@ -29,7 +28,6 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* SIMPLE HERO */}
       <header className="py-20 px-4 border-b border-gray-100">
         <div className="max-w-2xl mx-auto text-center">
           <h1 className="text-3xl font-bold mb-4">
@@ -56,7 +54,6 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* SIMPLE FEATURES */}
       <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-3 gap-12">
@@ -88,7 +85,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="py-10 border-t border-gray-200 text-center text-xs text-gray-500">
         <p>&copy; 2025 Purity UI. Simple Dashboard Tool.</p>
       </footer>

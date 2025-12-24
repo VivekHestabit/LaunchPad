@@ -1,7 +1,3 @@
-import Card from '@/app/components/ui/Badge';
-import Button from '@/app/components/ui/Badge';
-import Badge from '@/app/components/ui/Badge';
-import Input from '@/app/components/ui/Badge';
 import StatCard from '@/app/components/dashboard/StatCard';
 import LeftMiddleCard from '@/app/components/dashboard/LeftMiddleCard';
 import RightMiddleCard from '@/app/components/dashboard/RightMiddleCard';
@@ -9,6 +5,7 @@ import LeftBottom from '@/app/components/dashboard/LeftBottom';
 import RIghtBottom from '@/app/components/dashboard/RIghtBottom';
 import BelowLeft from '@/app/components/dashboard/BelowLeft';
 import BelowRight from '@/app/components/dashboard/BelowRight';
+import Footer from '@/app/components/dashboard/Footer';
 
 export default function Dashboard() {
   return (
@@ -36,6 +33,7 @@ export default function Dashboard() {
         <BelowLeft />
         <BelowRight />
       </div>
+      <Footer />
     </>
   );
 }
