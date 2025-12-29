@@ -1,6 +1,9 @@
+'use client';
 import SignNav from '../components/ui/SignNav';
+import { useState } from 'react';
 
 export default function SignIn() {
+  const [rememberMe, setRememberMe] = useState(false);
   return (
     <>
       <SignNav />
@@ -32,9 +35,19 @@ export default function SignIn() {
                 />
               </div>
               <div></div>
-              <div className="flex gap-3 mt-4">
-                <img src="/Base.svg" alt="" />
-                <span className="text-[#2D3748]">Remeber me </span>
+              <div className="flex items-center gap-3 mt-4">
+                <div
+                  onClick={() => setRememberMe(!rememberMe)}
+                  className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300
+      ${rememberMe ? 'bg-[#4FD1C5]' : 'bg-gray-300'}`}
+                >
+                  <div
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300
+        ${rememberMe ? 'translate-x-6' : 'translate-x-0'}`}
+                  ></div>
+                </div>
+
+                <span className="text-[#2D3748]">Remember me</span>
               </div>
               <button className="text-white pt-4 pb-4 text-xs w-full bg-[#4FD1C5] border rounded-2xl mt-8">
                 SIGN IN
@@ -42,13 +55,15 @@ export default function SignIn() {
               <div className="flex items-center justify-center mt-5">
                 <h3 className="text-[#A0AEC0]">
                   Don't have an account?{' '}
-                  <span className="text-[#4FD1C5]">Sign up</span>
+                  <a className="text-[#4FD1C5]" href="/signup">
+                    Sign up
+                  </a>
                 </h3>
               </div>
             </form>
           </div>
 
-          <div className="w-1/2  bg-white">
+          <div className="w-1/2 bg-white">
             <img
               src="/SS.svg"
               alt=""

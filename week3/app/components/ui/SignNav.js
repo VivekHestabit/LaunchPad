@@ -1,11 +1,8 @@
+'use client';
 import Link from 'next/link';
 export default function SignNav() {
   return (
-    <div
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50
-                 bg-white shadow-md rounded-xl
-                 px-8 py-5 w-[50%] opacity-90"
-    >
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white shadow-md rounded-xl px-8 py-5 w-[50%] opacity-90">
       <div className="flex items-center justify-between">
         {/* LEFT: LOGO */}
         <div className="flex items-center gap-3">
@@ -48,10 +45,7 @@ export default function SignNav() {
         </nav>
 
         {/* RIGHT: BUTTON */}
-        <button
-          className="bg-gray-900 text-white
-                     text-xs px-4 py-2 rounded-full"
-        >
+        <button className="bg-gray-900 text-white text-xs px-4 py-2 rounded-full">
           Free Download
         </button>
       </div>

@@ -1,5 +1,9 @@
+'use client';
+
+import { useState } from 'react';
 import SignupNav from '../components/ui/SignupNav';
 export default function signup() {
+  const [rememberMe, setRememberMe] = useState(false);
   return (
     <>
       <div className=" relative w-full min-h-screen items-center justify-center bg-white p-4">
@@ -47,16 +51,33 @@ export default function signup() {
                   placeholder="Your Password"
                   className="text-[#A0AEC0] mb-3  mt-3 border w-full rounded-2xl p-4 border-[#E2E8F0]"
                 />
-                <div className="flex gap-3 mt-4">
+                {/* <div className="flex gap-3 mt-4">
                   <img src="/Base.svg" alt="" />
                   <span className="text-[#2D3748]">Remeber me </span>
+                </div> */}
+                <div className="flex items-center gap-3 mt-4">
+                  <div
+                    onClick={() => setRememberMe(!rememberMe)}
+                    className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300
+      ${rememberMe ? 'bg-[#4FD1C5]' : 'bg-gray-300'}`}
+                  >
+                    <div
+                      className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300
+        ${rememberMe ? 'translate-x-6' : 'translate-x-0'}`}
+                    ></div>
+                  </div>
+
+                  <span className="text-[#2D3748]">Remember me</span>
                 </div>
+
                 <button className="text-white pt-4 pb-4 text-xs w-full bg-[#4FD1C5] border rounded-2xl mt-8">
                   SIGN IN
                 </button>
                 <p className="ml-25 mt-5 ">
                   Already have an account?{' '}
-                  <span className="text-[#4FD1C5] font-bold">Sign in</span>
+                  <a className="text-[#4FD1C5] font-bold" href="/signin">
+                    Sign in
+                  </a>
                 </p>
               </form>
             </div>

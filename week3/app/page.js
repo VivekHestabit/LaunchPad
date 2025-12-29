@@ -21,7 +21,7 @@ export default function LandingPage() {
             <Link href="/About" className="hover:underline">
               About
             </Link>
-            <Link href="/login" className="hover:underline">
+            <Link href="/signin" className="hover:underline">
               Login
             </Link>
           </div>

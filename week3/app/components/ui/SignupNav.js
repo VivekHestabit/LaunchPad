@@ -1,11 +1,7 @@
 import Link from 'next/link';
 export default function SignupNav() {
   return (
-    <div
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50
-                   rounded-xl 
-                 px-8 py-5 w-[50%] mt-10"
-    >
+    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 rounded-xl px-8 py-5 w-[50%] mt-10">
       <div className="flex items-center justify-between">
         {/* LEFT: LOGO */}
         <div className="flex items-center gap-3">
@@ -48,10 +44,7 @@ export default function SignupNav() {
         </nav>
 
         {/* RIGHT: BUTTON */}
-        <button
-          className="bg-white text-black text-xs font-bold
-                     text-sm px-4 py-2 rounded-full"
-        >
+        <button className="bg-white text-black text-xs font-bold text-sm px-4 py-2 rounded-full">
           Free Download
         </button>
       </div>
