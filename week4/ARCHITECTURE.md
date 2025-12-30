@@ -1,0 +1,1 @@
+-> src/ 1. config -> Environment and app configuration 2. loaders -> App and database initialization 3. Routes -> API endpoints 4. controllers -> Request/Response handling 5. services -> Business logic 6. utils -> Logger and helpers 7. Server.js -> Application entry point
