@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const addressSchema = new mongoose.Schema(
   {
@@ -12,42 +13,29 @@ const addressSchema = new mongoose.Schema(
 
 const accountSchema = new mongoose.Schema(
   {
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
+    name: { type: String, required: true, trim: true },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
     },
-
-    password: { type: String, required: true },
-
+    password: { type: String, required: true, select: false },
     status: { type: String, enum: ['ACTIVE', 'INACTIVE'], default: 'ACTIVE' },
-
-    adresses: [addressSchema],
+    addresses: [addressSchema],
   },
   { timestamps: true }
 );
 
-accountSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+accountSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
 accountSchema.virtual('fullName').get(function () {
-  return `${this.firstName} ${this.lastName}`;
-});
-
-accountSchema.on('index', (err) => {
-  if (err) {
-    console.log('Indexed are not created ', err);
-  } else {
-    console.log('Indexes are created');
-  }
+  return this.name || '';
 });
 
 accountSchema.index({ status: 1, createdAt: -1 });
 
-export default mongoose.model('Account', accountSchema);
+module.exports = mongoose.model('Account', accountSchema);

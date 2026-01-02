@@ -1,6 +1,6 @@
 const express = require('express');
 const logger = require('../utils/logger');
-const dotenv = require('dotenv');
+require('dotenv').config();
 
 module.exports = function createApp() {
   const app = express();

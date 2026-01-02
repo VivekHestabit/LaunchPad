@@ -1,5 +1,5 @@
-const Order = require('../models/Order');
-const Account = require('../models/Account');
+const Order = require('../models/Order.js');
+const Account = require('../models/Account.js');
 
 class OrderRepository {
   findAll() {
@@ -16,6 +16,7 @@ class OrderRepository {
       throw new Error('Account not found');
     }
 
+    account.orders = account.orders || [];
     account.orders.push(order._id);
     await account.save();
 
