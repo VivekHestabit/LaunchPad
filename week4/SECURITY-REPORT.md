@@ -83,3 +83,16 @@ Res => PayloadTooLargeError: request entity too large
     at processParams (/home/viveksingh/Desktop/Launchpad/week4/node_modules/router/index.js:582:12)
     at next (/home/viveksingh/Desktop/Launchpad/week4/node_modules/router/index.js:291:5)
     at router.handle (/home/viveksingh/Desktop/Launchpad/week4/node_modules/router/index.js:186:3)
+
+6. helmet() => Nodejs middleware for experss 
+eg -> Different origin cannot embed our site page : in an iframe : 
+
+For this create a index.html file : 
+
+/home/viveksingh/Desktop/Launchpad/week4/src/index.html
+
+and in the src = "http://localhost:3000/api/register" now attacker tries to access this page but get this error : 
+
+Framing 'http://localhost:3000/' violates the following Content Security Policy directive: "frame-ancestors 'self'". The request has been blocked.
+
+due to helmet middleware , which has this : X-Frame-Options: SAMEORIGIN , in the header will not allow to embed this page to different website or different origin ....
