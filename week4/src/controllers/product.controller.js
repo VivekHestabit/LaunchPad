@@ -35,7 +35,7 @@ const addProduct = async (req, res, next) => {
 
 const addUser = async (req, res, next) => {
   try {
-    await RegisterUser(req.body);
+    await RegisterUser(req.body, req.requestId);
     res
       .status(201)
       .json({ success: true, message: 'User Registered Successfully !' });
