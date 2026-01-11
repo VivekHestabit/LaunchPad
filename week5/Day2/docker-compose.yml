@@ -1,0 +1,31 @@
+
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    build: ./server
+    container_name: node-server
+    volumes:
+      - ./server:/app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    container_name: react-client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:
