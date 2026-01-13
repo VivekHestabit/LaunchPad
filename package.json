@@ -24,8 +24,11 @@
     "prettier": "^3.7.4"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,html,css,scss,json,md}": [
-      "prettier --check"
+    "**/*.js": [
+      "prettier --write"
     ]
+  },
+  "dependencies": {
+    "nodemon": "^3.1.11"
   }
 }

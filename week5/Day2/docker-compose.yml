@@ -10,6 +10,7 @@ services:
   server:
     build: ./server
     container_name: node-server
+    image : day2-server:latest
     volumes:
       - ./server:/app
     ports:
@@ -19,6 +20,7 @@ services:
 
   client:
     build: ./client
+    image : day2-client:latest
     container_name: react-client
     ports:
       - "3000:3000"
