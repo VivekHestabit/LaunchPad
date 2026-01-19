@@ -1,0 +1,1 @@
+Several numeric columns contained mixed or string-formatted values and were explicitly cleaned and cast during EDA.
