@@ -7,7 +7,33 @@ from sklearn.compose import ColumnTransformer
 DATA_PATH = "src/data/processed/final.csv"
 
 def load_data():
-    return pd.read_csv(DATA_PATH)
+    df = pd.read_csv(DATA_PATH)
+    df = convert_to_numeric(df)
+    return df
+
+
+def convert_to_numeric(df):
+    numeric_cols = [
+        "Total_Spend",
+        "Annual_Income",
+        "Years_as_Customer",
+        "Num_of_Purchases",
+        "Num_of_Returns",
+        "Num_of_Support_Contacts",
+        "Satisfaction_Score",
+        "Last_Purchase_Days_Ago"
+    ]
+
+    for col in numeric_cols:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+        
+        binary_cols = ["Promotion_Response", "Email_Opt_In"]
+
+    for col in binary_cols:
+        df[col] = df[col].map({"Yes": 1, "No": 0})
+
+    return df
+
 
 def create_features(df):
     df["spend_per_year"] = df["Total_Spend"] / df["Years_as_Customer"]
