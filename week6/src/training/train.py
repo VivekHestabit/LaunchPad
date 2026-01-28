@@ -1,8 +1,8 @@
+import os
 import json
 import joblib
-import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.impute import SimpleImputer
 
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from sklearn.metrics import (
@@ -20,94 +20,91 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from xgboost import XGBClassifier
 
-from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
+from src.features.build_features import load_data, engineer_features, build_pipeline
+from src.features.feature_selector import correlation_filter, mutual_info_selection, rfe_selection
 
-DATA_PATH = "../data/processed/final.csv"
-df = pd.read_csv(DATA_PATH)
+os.makedirs("./models", exist_ok=True)
+os.makedirs("./evaluation", exist_ok=True)
 
-df["Annual_Income"] = (
-    df["Annual_Income"]
-    .astype(str)
-    .str.replace("$", "", regex=False)
-    .str.replace(",", "", regex=False)
+df = load_data()
+df = engineer_features(df)
+
+X_train, X_test, y_train, y_test, feature_names = build_pipeline(df)
+
+corr_indices = correlation_filter(X_train, threshold=0.85)
+X_train = X_train[:, corr_indices]
+X_test = X_test[:, corr_indices]
+feature_names = feature_names[corr_indices]
+
+mi_scores = mutual_info_selection(X_train, y_train)
+
+TOP_K = 15
+final_indices, final_features = rfe_selection(
+    X_train, y_train, feature_names, top_k=TOP_K
 )
 
-df["Annual_Income"] = pd.to_numeric(df["Annual_Income"], errors="coerce")
+X_train = X_train[:, final_indices]
+X_test = X_test[:, final_indices]
 
-le = LabelEncoder()
-df["Target_Churn"] = le.fit_transform(df["Target_Churn"])
-
-y = df["Target_Churn"]
-X = df.drop(columns=["Target_Churn", "Customer_ID"])
-
-categorical_cols = ["Gender", "Email_Opt_In", "Promotion_Response"]
-numerical_cols = [col for col in X.columns if col not in categorical_cols]
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        (
-            "num",
-            Pipeline([
-                ("imputer", SimpleImputer(strategy="median")),
-                ("scaler", StandardScaler())
-            ]),
-            numerical_cols
-        ),
-        (
-            "cat",
-            Pipeline([
-                ("imputer", SimpleImputer(strategy="most_frequent")),
-                ("encoder", OneHotEncoder(drop="first", handle_unknown="ignore"))
-            ]),
-            categorical_cols
-        )
-    ]
-)
+with open("./src/features/feature_list.json", "w") as f:
+    json.dump(final_features, f, indent=4)
 
 models = {
-    "Logistic Regression": Pipeline([
-        ("preprocessor", preprocessor),
-        ("model", LogisticRegression(max_iter=1000))
-    ]),
-
-    "Random Forest": Pipeline([
-        ("preprocessor", preprocessor),
-        ("model", RandomForestClassifier(n_estimators=200, random_state=42))
-    ]),
-
-    "XGBoost": Pipeline([
-        ("preprocessor", preprocessor),
-        ("model", XGBClassifier(eval_metric="logloss", random_state=42))
-    ]),
-
-    "Neural Network": Pipeline([
-        ("preprocessor", preprocessor),
-        ("model", MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=500, random_state=42))
-    ])
+    "Logistic Regression (L2)": LogisticRegression(
+        penalty="l2",
+        C=1.0,
+        max_iter=1000
+    ),
+    "Random Forest": RandomForestClassifier(
+        n_estimators=300,
+        max_depth=None,
+        random_state=42
+    ),
+    "XGBoost": XGBClassifier(
+        eval_metric="logloss",
+        learning_rate=0.05,
+        max_depth=4,
+        n_estimators=300,
+        random_state=42
+    ),
+    "Neural Network": MLPClassifier(
+        hidden_layer_sizes=(64, 32),
+        alpha=0.001,
+        max_iter=500,
+        random_state=42
+    )
 }
 
-skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 results = {}
 best_model = None
 best_auc = -1
 
 for name, model in models.items():
-    print(f"Training {name}...")
+    print(f"\nTraining {name}...")
 
-    y_pred = cross_val_predict(model, X, y, cv=skf)
+    y_pred = cross_val_predict(
+        model,
+        X_train,
+        y_train,
+        cv=cv
+    )
+
     y_proba = cross_val_predict(
-        model, X, y, cv=skf, method="predict_proba"
+        model,
+        X_train,
+        y_train,
+        cv=cv,
+        method="predict_proba"
     )[:, 1]
 
     metrics = {
-        "accuracy": accuracy_score(y, y_pred),
-        "precision": precision_score(y, y_pred),
-        "recall": recall_score(y, y_pred),
-        "f1": f1_score(y, y_pred),
-        "roc_auc": roc_auc_score(y, y_proba)
+        "accuracy": accuracy_score(y_train, y_pred),
+        "precision": precision_score(y_train, y_pred),
+        "recall": recall_score(y_train, y_pred),
+        "f1": f1_score(y_train, y_pred),
+        "roc_auc": roc_auc_score(y_train, y_proba)
     }
 
     results[name] = metrics
@@ -116,19 +113,19 @@ for name, model in models.items():
         best_auc = metrics["roc_auc"]
         best_model = model
 
-best_model.fit(X, y)
-
-joblib.dump(best_model, "../models/best_model.pkl")
-
-with open("../evaluation/metrics.json", "w") as f:
+with open("./src/evaluation/metrics.json", "w") as f:
     json.dump(results, f, indent=4)
 
-y_final_pred = best_model.predict(X)
-cm = confusion_matrix(y, y_final_pred)
+best_model.fit(X_train, y_train)
+joblib.dump(best_model, "./src/models/best_model.pkl")
+
+y_test_pred = best_model.predict(X_test)
+cm = confusion_matrix(y_test, y_test_pred)
 
 disp = ConfusionMatrixDisplay(confusion_matrix=cm)
 disp.plot()
-plt.savefig("../evaluation/confusion_matrix.png")
+plt.savefig("./src/evaluation/confusion_matrix.png")
 plt.close()
 
-print("\n Day-3 Training Completed Successfully")
+print("\n DAY 3 COMPLETED SUCCESSFULLY")
+print(f"Best ROC-AUC: {best_auc:.4f}")

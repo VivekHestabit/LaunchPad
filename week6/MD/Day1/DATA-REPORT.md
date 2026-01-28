@@ -1,56 +1,29 @@
-DAY 1 — Data Pipeline & EDA
-Project
+# Day 1 — Data Pipeline & EDA Report (Titanic)
 
-Online Transaction Customer Churn Prediction
+## Dataset Overview
+- Rows: 891
+- Target: Survived (Binary)
+- Problem Type: Binary Classification
 
-Objective
+## Data Cleaning
+- Removed duplicate records
+- Filled missing Age values using median
+- Filled missing Embarked using mode
+- Dropped Cabin, Ticket, PassengerId, Name due to high missing or irrelevance
 
-Build a reproducible data pipeline to clean raw data and perform initial exploratory data analysis (EDA).
+## Outlier Handling
+- Fare outliers capped using IQR method
 
-Dataset
+## EDA Insights
+- Survival rate is imbalanced (~38% survived)
+- Females had significantly higher survival rates
+- First-class passengers survived more
+- Fare is positively correlated with survival
+- Age shows non-linear relationship with survival
 
-Source: Online Transaction Customer Churn dataset
+## Conclusion
+The dataset is clean, consistent, and suitable for feature engineering and model training.
 
-Type: Tabular (numerical + categorical)
-
-Target: Customer Churn
-
-Data Pipeline
-
-Loaded raw data from data/raw/
-
-Removed duplicate records
-
-Handled missing values:
-
-Numerical features: median imputation
-
-Categorical features: mode imputation
-
-Handled outliers using IQR-based clipping
-
-Saved cleaned dataset to data/processed/final.csv
-
-Exploratory Data Analysis
-
-Feature distributions analyzed
-
-Target class distribution analyzed
-
-Correlation matrix generated for numerical features
-
-Missing values heatmap visualized
-
-Deliverables
-
-pipelines/data_pipeline.py
-
-notebooks/EDA.ipynb
-
-data/processed/final.csv
-
-DATA-REPORT.md
-
-Outcome
-
-A clean, analysis-ready dataset and baseline EDA insights were generated to support further feature engineering and model development.
+## Status
+✔ Day 1 completed  
+✔ Ready for Day 2

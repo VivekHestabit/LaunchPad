@@ -1,5 +1,17 @@
-{
-  "engineered_features": 11,
-  "selected_features": 15,
-  "target": "Target_Churn"
-}
+[
+    "num__Pclass",
+    "num__Age",
+    "num__SibSp",
+    "num__Parch",
+    "num__Fare",
+    "num__IsAlone",
+    "num__FarePerPerson",
+    "num__ChildFlag",
+    "num__ElderFlag",
+    "num__ClassFareInteraction",
+    "cat__Sex_1",
+    "cat__Embarked_Q",
+    "cat__Embarked_S",
+    "cat__AgeGroup_Teen",
+    "cat__AgeGroup_YoungAdult"
+]
