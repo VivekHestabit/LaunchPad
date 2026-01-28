@@ -127,5 +127,5 @@ disp.plot()
 plt.savefig("./src/evaluation/confusion_matrix.png")
 plt.close()
 
-print("\n DAY 3 COMPLETED SUCCESSFULLY")
+
 print(f"Best ROC-AUC: {best_auc:.4f}")
