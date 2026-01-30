@@ -1,0 +1,18 @@
+{
+    "Age": {
+        "psi": 0.6237,
+        "status": "SEVERE_DRIFT"
+    },
+    "Fare": {
+        "psi": 0.2931,
+        "status": "SEVERE_DRIFT"
+    },
+    "Sibsp": {
+        "psi": 0.0291,
+        "status": "NO_DRIFT"
+    },
+    "Parch": {
+        "psi": 0.3464,
+        "status": "SEVERE_DRIFT"
+    }
+}

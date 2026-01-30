@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -31,6 +31,9 @@ def engineer_features(df):
 
     return df
 
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+
 def build_pipeline(df):
     y = df["Survived"]
     X = df.drop(columns=["Survived"])
@@ -45,25 +48,15 @@ def build_pipeline(df):
         ]
     )
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.2,
-        stratify=y,
-        random_state=42
-    )
+    return X, y, preprocessor
 
-    X_train = preprocessor.fit_transform(X_train)
-    X_test = preprocessor.transform(X_test)
-
-    feature_names = preprocessor.get_feature_names_out()
-
-    return X_train, X_test, y_train, y_test, feature_names
 
 if __name__ == "__main__":
     df = load_data()
     df = engineer_features(df)
 
-    X_train, X_test, y_train, y_test, feature_names = build_pipeline(df)
+    X_train, X_test, y_train, y_test, feature_names , preprocessor = build_pipeline(df)
+    
+    joblib.dump(preprocessor , "src/models/preprocessor_v1.pkl")
 
     print(" Day 2 feature engineering completed successfully")
