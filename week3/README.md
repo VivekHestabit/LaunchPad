@@ -1,36 +1,154 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Week — Chakra AI Frontend (Next.js)
 
-## Getting Started
+## Overview
 
-First, run the development server:
+In this week, we built the **Chakra AI Frontend** using the **Next.js framework** with the **App Router architecture** and **Tailwind CSS** for styling.  
+The focus was on creating a **modern, responsive, and scalable UI** with reusable components and a clean project structure.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The application includes authentication pages, a dashboard-driven layout, data tables, and a landing page, following real-world frontend development practices.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Tech Stack Used
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS
+- **Language:** JavaScript
+- **UI Architecture:** Component-based design
+- **State & Providers:** Context / Providers (AOS animations)
+- **Animations:** AOS (Animate on Scroll)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Features Implemented
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Fully responsive UI using Tailwind CSS
+- Authentication pages (Sign In / Sign Up)
+- Dashboard layout with sidebar navigation
+- Reusable UI components
+- Data tables page
+- Profile management UI
+- Landing page with animations
+- Modular folder structure for scalability
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Project Structure (High Level)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+components/
+├── accountPages/
+├── billing/
+├── dashboard/
+├── rtl/
+├── Tables/
+└── ui/
+├── Badge.js
+├── Button.js
+├── Card.js
+├── Input.js
+├── Modal.jsx
+├── Navbar.js
+├── Sidebar.js
+├── SignNav.js
+├── SignupNav.js
+└── AOSProvider.js
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+app/
+├── signin/
+├── signup/
+├── favicon.ico
+├── globals.css
+├── layout.js
+├── page.js
+└── not-found.js
+
+
+---
+
+## Pages Implemented
+
+### 1. Landing Page
+The landing page introduces the Chakra AI platform and highlights key features with animations and a clean UI.
+
+![Landing Page](./public/Landing.png)
+
+---
+
+### 2. Sign In Page
+User authentication page allowing existing users to log in.
+
+![Sign In Page](./public/signin.png)
+
+---
+
+### 3. Sign Up Page
+User registration page for new users.
+
+![Sign Up Page](./public/signup.png)
+
+---
+
+### 4. Dashboard Page
+Main application dashboard displaying key insights and navigation options.
+
+![Dashboard Page](./public/Dashboard.png)
+
+---
+
+### 5. Tables Page
+Page displaying structured data using reusable table components.
+
+![Tables Page](./public/Tables.png)
+
+---
+
+### 6. Profile Page
+User profile page to view and manage personal account details.
+
+![Profile Page](./public/ProfileImage.png)
+
+---
+
+## UI Components
+
+All common UI elements were abstracted into reusable components such as:
+- Buttons
+- Inputs
+- Cards
+- Badges
+- Navbar
+- Sidebar
+- Modals
+
+This ensures:
+- Consistent UI
+- Easier maintenance
+- Scalability for future features
+
+(Refer to `UI-COMPONENT.md` for detailed UI documentation.)
+
+---
+
+## Learning Outcomes
+
+- Practical experience with **Next.js App Router**
+- Building scalable frontend architectures
+- Creating reusable UI components
+- Styling complex layouts using **Tailwind CSS**
+- Organizing real-world frontend projects
+- Implementing animations and responsive design
+
+---
+
+## Future Improvements
+
+- Integrate backend APIs
+- Add role-based access control
+- Improve accessibility (ARIA support)
+- Add dark/light theme toggle
+- Implement form validation and error handling
+
+---
+
+## Screenshots Folder Structure (Recommended)
+

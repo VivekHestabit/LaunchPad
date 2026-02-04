@@ -2,9 +2,9 @@ import Image from 'next/image';
 export default function InnerCard({ name, Project, img }) {
   const src = img?.startsWith('/') ? img : `/${img}`;
   return (
-    <div className="text-black h-[390px] w-[370px] t-[902.5px] l-[319px] ml-4 mt-5 transition-transform transition-200 hover:-translate-y-2">
+    <div className="text-black h-97.5 w-92.5 t-[902.5px] l-[319px] ml-4 mt-5 transition-transform transition-200 hover:-translate-y-2">
       <Image src={src} width={370} height={191} alt="name"></Image>
-      <div className="h-[141.5px] w-[350px] t-[1114px] l-[328px]">
+      <div className="h-[141.5px] w-87.5 t-[1114px] l-[328px]">
         <p className="text-sm text-[#A0AEC0] mt-4">{Project}</p>
         <h1 className="font-extrabold text-2xl">{name}</h1>
         <p className="text-md text-[#A0AEC0] mt-4">
@@ -17,7 +17,7 @@ export default function InnerCard({ name, Project, img }) {
           <img
             src="/4.png"
             alt=""
-            className="h-[23px] w-[59px] t-[1226.5px] l-[621px]"
+            className="h-5.75 w-[59px] t-[1226.5px] l-[621px]"
           />
         </div>
       </div>

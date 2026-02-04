@@ -35,7 +35,7 @@ export default function BelowLeft() {
     },
   ];
   return (
-    <div className="h-[519px] w-[1057px] t-[991px] l-[298px] rounded-2xl flex flex-col shadow-lg transition-transform duration-200 hover:-translate-y-2">
+    <div className="h-129.75 w-264.25 t-[991px] l-[298px] rounded-2xl flex flex-col shadow-lg transition-transform duration-200 hover:-translate-y-2">
       <div className="mt-5 ml-5">
         <h1 className="text-black font-extrabold">Projects</h1>
         <p className="flex gap-2">

@@ -1,16 +1,18 @@
 import InnerCard from '@/app/components/dashboard/Profile/InnerCard.js';
 import Footer from '@/app/components/dashboard/Footer';
 import ProfileCard from '@/app/components/dashboard/Profile/ProfileCard';
+import ProfileCard2 from '@/app/components/dashboard/Profile/ProfileCard2';
+import ProfileCard3 from '@/app/components/dashboard/Profile/ProfileCard3';
 
 export default function Page() {
   return (
     <div>
-      <div className="border-2 border-pink-500 h-[377.5px] w-[1510px] l-[298px] t-[397px] rounded-xl shadow-xl flex gap-5">
+      <div className="border-2 h-[377.5px] w-377.5 l-[298px] t-[397px] rounded-xl shadow-xl flex gap-5">
         <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
+        <ProfileCard2 />
+        <ProfileCard3 />
       </div>
-      <div className=" h-[540px] w-[1520px] l-[298px] t-[798.5px] mt-5 rounded-xl shadow-xl ">
+      <div className=" h-135 w-380 l-[298px] t-[798.5px] mt-5 rounded-xl shadow-xl ">
         <div className="flex flex-col mt-8 ml-5">
           <h1 className="font-extrabold text-black text-2xl">Projects</h1>
           <p className="text-gray-500 mt-3">Architects design houses</p>
