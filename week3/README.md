@@ -148,7 +148,5 @@ This ensures:
 - Add dark/light theme toggle
 - Implement form validation and error handling
 
----
 
-## Screenshots Folder Structure (Recommended)
 
