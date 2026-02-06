@@ -2,7 +2,9 @@ import json
 from rank_bm25 import BM25Okapi
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
-
+from src.config.settings import EMBEDDING_MODEL_NAME , EMBEDDINGS_DATA_PATH
+import numpy as np
+ 
 COLLECTION_NAME = "enterprise_rag"
 
 
@@ -12,8 +14,9 @@ class HybridRetriever:
 
         self.top_k = top_k
         self.client = QdrantClient(path="src/vectorstore/qdrant")
-        self.model = SentenceTransformer("BAAI/bge-base-en")
-
+        self.model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+        self.embeddings = np.load(EMBEDDINGS_DATA_PATH)
+        
         self.chunks = []
         self.corpus = []
 
@@ -47,10 +50,12 @@ class HybridRetriever:
         for hit in results:
 
             payload = hit.payload
-
+            chunk_index = payload["meta_data"]["chunk_index"]
+            
             semantic_hits.append({
                 "score": float(hit.score),
                 "text": payload["text"],
+                "embeddings" : self.embeddings[chunk_index],
                 "metadata": payload["meta_data"],
                 "retrieval_type": "semantic"
             })
@@ -78,10 +83,10 @@ class HybridRetriever:
             keyword_hits.append({
                 "score": float(scores[idx]),
                 "text": chunk["text"],
+                "embeddings" : self.embeddings[idx],
                 "metadata": chunk["metadata"],
                 "retrieval_type": "keyword"
             })
-
         return keyword_hits
 
     def hybrid_search(self, query):
@@ -101,3 +106,5 @@ class HybridRetriever:
                 combined[chunk_index]["retrieval_type"] = "hybrid"
 
         return list(combined.values())
+    
+    

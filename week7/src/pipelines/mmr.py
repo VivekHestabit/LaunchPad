@@ -10,18 +10,14 @@ class MMRSelector:
         lambda_param=0.7
     ):
         self.lambda_param = lambda_param
-        self.embedder = SentenceTransformer(embedding_model)
 
     def _cosine_similarity(self, a, b):
         return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
     def select(self, chunks, top_k):
 
-        texts = [c["text"] for c in chunks]
-        embeddings = self.embedder.encode(
-            texts,
-            normalize_embeddings=True
-        )
+        embeddings = [c["embeddings"] for c in chunks]
+        
 
         selected = []
         selected_idxs = []

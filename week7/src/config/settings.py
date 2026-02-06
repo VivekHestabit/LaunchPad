@@ -6,7 +6,7 @@ DATA_ROOT = "src/data"
 RAW_DATA_PATH = f"{DATA_ROOT}/raw"
 CLEANED_DATA_PATH = f"{DATA_ROOT}/cleaned"
 CHUNKS_DATA_PATH = f"{DATA_ROOT}/chunks"
-EMBEDDINGS_DATA_PATH = f"{DATA_ROOT}/embeddings"
+EMBEDDINGS_DATA_PATH = f"{DATA_ROOT}/embeddings/embeddings.npy"
 
 VECTORSTORE_PATH = "src/vectorstore/index.faiss"
 
@@ -15,7 +15,7 @@ CHUNK_OVERLAP = 100
 CHUNKING_STRATEGY = "recursive_character"
 
 EMBEDDING_PROVIDER = "huggingface"
-EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_MODEL_NAME = "BAAI/bge-base-en"
 EMBEDDING_DIMENSION = 384
 
 VECTORSTORE_TYPE = "faiss"

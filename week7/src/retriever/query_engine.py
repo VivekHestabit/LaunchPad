@@ -1,13 +1,13 @@
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
-
+from src.config.settings import EMBEDDING_MODEL_NAME
 COLLECTION_NAME = "enterprise_rag"
 
 class Retriever:
     def __init__(self, top_k=5):
         self.top_k = top_k
         self.client = QdrantClient(path="src/vectorstore/qdrant")
-        self.model = SentenceTransformer("BAAI/bge-base-en")
+        self.model = SentenceTransformer(EMBEDDING_MODEL_NAME)
 
     def search(self, query: str):
         query_vector = self.model.encode(
