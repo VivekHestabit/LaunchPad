@@ -32,10 +32,11 @@ class Retriever:
 
 if __name__ == "__main__":
     retriever = Retriever(top_k=5)
-    results = retriever.search("The Workforce Engagement programme 2022")
+    results = retriever.search(" Tell me about the simon king ")
 
     for r in results:
         print(r["score"])
         print(r["payload"]["meta_data"])
         print(r["payload"]["text"][:400])
         print("-" * 50)
+        print(r["payload"])

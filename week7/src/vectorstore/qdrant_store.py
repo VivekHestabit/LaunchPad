@@ -3,6 +3,7 @@ import numpy as np
 from pathlib import Path
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams , Distance , PointStruct
+import uuid
 
 embedding_path = Path("src/data/embeddings/embeddings.npy")
 metadata_path = Path("src/data/embeddings/metadata.jsonl")
@@ -39,10 +40,12 @@ client.recreate_collection(
 
 points = [] 
 
-for idx , (vector , meta , chunk) in enumerate(zip(vectors , metadata , chunks)):
+for  vector , meta , chunk in zip(vectors , metadata , chunks):
+    content = chunks["text"]
+    point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS , content))
     points.append(
             PointStruct(
-                id = idx,
+                id = point_id,
                 vector=vector.tolist(),
                 payload={
                     "meta_data" : meta,
