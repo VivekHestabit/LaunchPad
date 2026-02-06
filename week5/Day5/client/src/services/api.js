@@ -1,4 +1,3 @@
-// Load the URL from the .env file
 const API_URL = import.meta.env.VITE_API_URL;
 
 const handleResponse = async (response) => {

@@ -1,38 +1,81 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
+    sans-serif;
+  background-color: #f4f6f8;
+  color: #1f2937;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.container {
+  background-color: #ffffff;
+  width: 420px;
+  padding: 28px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.description {
+  margin-top: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.status {
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.status.success {
+  background-color: #ecfdf3;
+  border-color: #bbf7d0;
+  color: #065f46;
+}
+
+.status.error {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.meta {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.meta span {
+  font-family: monospace;
+  background-color: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #374151;
 }

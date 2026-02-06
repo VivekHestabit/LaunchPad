@@ -23,7 +23,7 @@ services:
     image : day2-client:latest
     container_name: react-client
     ports:
-      - "3000:3000"
+      - "3000:5173"
     volumes:
       - ./client:/app
     depends_on:
