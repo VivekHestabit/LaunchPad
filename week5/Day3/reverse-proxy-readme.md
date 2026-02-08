@@ -20,19 +20,19 @@ NGINX acts as a single entry point for clients and distributes traffic across mu
 
 ## Components Used
 
-- **NGINX**
-  - Acts as a reverse proxy
-  - Routes `/api` requests to backend services
-  - Performs round-robin load balancing
+### NGINX
+- Acts as a reverse proxy
+- Routes `/api` requests to backend services
+- Performs round-robin load balancing
 
-- **Backend Service**
-  - Node.js HTTP server
-  - Runs on port `3000`
-  - Two identical instances (`backend1`, `backend2`)
+### Backend Service
+- Node.js HTTP server
+- Runs on port `3000`
+- Two identical instances (`backend1`, `backend2`)
 
-- **Docker & Docker Compose**
-  - Containerizes all services
-  - Provides internal networking and DNS-based service discovery
+### Docker & Docker Compose
+- Containerizes all services
+- Provides internal networking and DNS-based service discovery
 
 ---
 
@@ -54,8 +54,6 @@ NGINX acts as a single entry point for clients and distributes traffic across mu
   - Request 2 → backend2
   - Request 3 → backend1
 
-This ensures even distribution of traffic across backend services.
-
 ---
 
 ## Why Reverse Proxy is Used
@@ -70,8 +68,20 @@ This ensures even distribution of traffic across backend services.
 ## Docker Networking
 
 - Docker Compose creates a private bridge network
-- Containers can communicate using service names
-- NGINX resolves `backend1` and `backend2` via Docker’s internal DNS
+- Containers communicate using service names
+- NGINX resolves `backend1` and `backend2` using Docker’s internal DNS
+
+---
+
+## Load Balancing Verification (Browser Output)
+
+### Browser Response → backend1
+![Browser Backend1](../screenshots/Response1.png)
+
+### Browser Response → backend2
+![Browser Backend2](../screenshots/Response2.png)
+
+Refreshing the `/api` endpoint alternates responses between backend instances, confirming round-robin load balancing.
 
 ---
 
