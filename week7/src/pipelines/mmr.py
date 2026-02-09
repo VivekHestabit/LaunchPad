@@ -1,12 +1,9 @@
 import numpy as np
-from sentence_transformers import SentenceTransformer
-
 
 class MMRSelector:
 
     def __init__(
         self,
-        embedding_model="BAAI/bge-base-en",
         lambda_param=0.7
     ):
         self.lambda_param = lambda_param

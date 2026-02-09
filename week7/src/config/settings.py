@@ -8,7 +8,6 @@ CLEANED_DATA_PATH = f"{DATA_ROOT}/cleaned"
 CHUNKS_DATA_PATH = f"{DATA_ROOT}/chunks"
 EMBEDDINGS_DATA_PATH = f"{DATA_ROOT}/embeddings/embeddings.npy"
 
-VECTORSTORE_PATH = "src/vectorstore/index.faiss"
 
 CHUNK_SIZE = 700
 CHUNK_OVERLAP = 100
@@ -18,8 +17,7 @@ EMBEDDING_PROVIDER = "huggingface"
 EMBEDDING_MODEL_NAME = "BAAI/bge-base-en"
 EMBEDDING_DIMENSION = 384
 
-VECTORSTORE_TYPE = "faiss"
-VECTOR_INDEX_TYPE = "flat"
+VECTORSTORE_TYPE = "Qdrant"
 SIMILARITY_METRIC = "cosine"
 
 RETRIEVER_TOP_K = 5
