@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { getUser } = require('../repositories/user.respository');
+const { getUser } = require('../repositories/Register.respository');
 const { sendEmailJob } = require('../jobs/email.job');
 const logger = require('../utils/logger');
 

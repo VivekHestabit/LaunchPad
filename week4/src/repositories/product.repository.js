@@ -1,4 +1,4 @@
-const Product = require('../models/Product.js');
+const Product = require('../models/Product');
 
 const findProducts = async (query, options) => {
   return Product.find(query).sort(options.sort);

@@ -1,12 +1,11 @@
 const express = require('express');
 
 const ProductRoutes = require('../routes/product.routes');
-const validate = require('../middlewares/validate');
-const { createProductSchema } = require('../validations/product.validation');
 const router = express.Router();
-const RegisterRoutes = require('./Register.routes');
+const RegisterRoutes = require('./User.routes');
+const AccountRegister = require('./AccountRegister.routes');
 
-router.use('/products', validate(createProductSchema), ProductRoutes);
+router.use('/products', ProductRoutes);
 router.use('/register', RegisterRoutes);
-
+router.use('/Account', AccountRegister);
 module.exports = router;

@@ -16,7 +16,5 @@ module.exports = function createApp() {
   logger.info('Middlewares loaded');
   app.use('/api', routes);
 
-  logger.info('Routes mounted: 0 endpoints');
-
   return app;
 };

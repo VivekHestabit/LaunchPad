@@ -3,8 +3,8 @@ const {
   deleteProductService,
   addProdcutService,
 } = require('../services/product.service.js');
-const { RegisterUser } = require('../services/Register.service.js');
-const { GetUser } = require('../services/Register.service.js');
+const { RegisterUser } = require('../services/RegisterUser.service.js');
+const { GetUser } = require('../services/RegisterUser.service.js');
 
 const getProducts = async (req, res, next) => {
   try {
@@ -27,7 +27,9 @@ const deleteProduct = async (req, res, next) => {
 const addProduct = async (req, res, next) => {
   try {
     await addProdcutService(req.body);
-    res.json({ success: true, message: 'Product Added successfully!' });
+    res
+      .status(201)
+      .json({ success: true, message: 'Product Added successfully!' });
   } catch (err) {
     next(err);
   }

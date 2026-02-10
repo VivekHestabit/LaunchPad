@@ -63,12 +63,17 @@ const addProdcutService = async (data) => {
   if (!data.name || !data.price) {
     throw new Error('Name or Price not given');
   }
-  const ProdcutData = {
+  const ProductData = {
     ...data,
     isDeleted: false,
   };
-  const product = await ProductRepository(ProdcutData);
-  return product;
+  try {
+    const product = await ProductRepository(ProductData);
+
+    return product;
+  } catch (dbError) {
+    throw dbError;
+  }
 };
 
 module.exports = {
