@@ -82,7 +82,7 @@ def run_drift_check():
     with open(OUTPUT_PATH, "w") as f:
         json.dump(drift_results, f, indent=4)
 
-    print("✅ Drift check completed successfully")
+    print(" Drift check completed successfully")
     print(json.dumps(drift_results, indent=4))
 
 if __name__ == "__main__":

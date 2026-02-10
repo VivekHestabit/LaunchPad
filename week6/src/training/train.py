@@ -54,7 +54,7 @@ final_pipeline = Pipeline([("feature_engineering", feature_engineering), ("prepr
 
 final_pipeline.fit(X, y)
 joblib.dump(final_pipeline, "src/models/model_v1.pkl")
-print("✅ model_v1.pkl saved successfully")
+print(" model_v1.pkl saved successfully")
 
 y_pred = final_pipeline.predict(X)
 cm = confusion_matrix(y, y_pred)
@@ -62,4 +62,4 @@ disp = ConfusionMatrixDisplay(confusion_matrix=cm)
 disp.plot()
 plt.savefig(f"{EVAL_DIR}/confusion_matrix.png")
 plt.close()
-print("🎉 Training complete and deployment-ready")
+print(" Training complete and deployment-ready")

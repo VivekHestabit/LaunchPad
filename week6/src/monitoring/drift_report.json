@@ -1,18 +1,18 @@
 {
     "Age": {
-        "psi": 0.6237,
+        "psi": 0.3616,
         "status": "SEVERE_DRIFT"
     },
     "Fare": {
-        "psi": 0.2931,
-        "status": "SEVERE_DRIFT"
+        "psi": 0.1827,
+        "status": "MODERATE_DRIFT"
     },
     "Sibsp": {
-        "psi": 0.0291,
+        "psi": 0.0364,
         "status": "NO_DRIFT"
     },
     "Parch": {
-        "psi": 0.3464,
-        "status": "SEVERE_DRIFT"
+        "psi": 0.1405,
+        "status": "MODERATE_DRIFT"
     }
 }
