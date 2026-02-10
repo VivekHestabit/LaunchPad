@@ -38,7 +38,7 @@ A local domain is used to simulate a production-like setup.
 
 The following entry was added to the system hosts file:
 
-127.0.0.1 myapp.local
+`127.0.0.1 myapp-dev.localhost`
 
 
 This allows accessing the application using a domain instead of `localhost`.
@@ -51,8 +51,8 @@ This allows accessing the application using a domain instead of `localhost`.
 
 Certificates were generated using **mkcert** for the local domain:
 
-- `myapp.local.pem`  
-- `myapp.local-key.pem`  
+- `myapp-dev.localhost.pem`  
+- `myapp-dev.localhost-key.pem`  
 
 These certificates are trusted by the local system and browser.
 
