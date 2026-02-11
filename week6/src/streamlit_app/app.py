@@ -67,7 +67,7 @@ if st.button ("Predict Survival "):
     try:
         
         response = requests.post(
-            "http://localhost:8000/predict",
+            "http://localhost:5001/predict",
             json=payload
         )
         

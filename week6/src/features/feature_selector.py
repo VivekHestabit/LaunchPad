@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.feature_selection import mutual_info_classif, RFE
 from sklearn.linear_model import LogisticRegression
 
+
 def correlation_filter(X, threshold=0.85):
     corr = np.corrcoef(X.T)
     drop = set()
@@ -17,12 +18,14 @@ def correlation_filter(X, threshold=0.85):
     keep_indices = [i for i in range(X.shape[1]) if i not in drop]
     return keep_indices
 
+
 def mutual_info_selection(X, y):
     mi_scores = mutual_info_classif(X, y, random_state=42)
     return mi_scores
 
+
 def rfe_selection(X, y, feature_names, top_k=15):
-    model = LogisticRegression(max_iter=1000)
+    model = LogisticRegression(max_iter=1000, solver="liblinear")
     rfe = RFE(model, n_features_to_select=top_k)
     rfe.fit(X, y)
 
@@ -30,6 +33,7 @@ def rfe_selection(X, y, feature_names, top_k=15):
     names = [feature_names[i] for i in indices]
 
     return indices, names
+
 
 def plot_feature_importance(mi_scores, feature_names):
     os.makedirs("./src/evaluation", exist_ok=True)
@@ -44,16 +48,28 @@ def plot_feature_importance(mi_scores, feature_names):
     plt.savefig("./src/evaluation/feature_importance.png")
     plt.close()
 
+
 if __name__ == "__main__":
-    from build_features import load_data, engineer_features, build_pipeline
+    from src.features.build_features import load_data, engineer_features, build_pipeline
 
     df = load_data()
     df = engineer_features(df)
 
-    X_train, X_test, y_train, y_test, feature_names = build_pipeline(df)
+    X, y, preprocessor = build_pipeline(df)
 
-    mi_scores = mutual_info_selection(X_train, y_train)
+  
+    X_transformed = preprocessor.fit_transform(X)
+
+    feature_names = preprocessor.get_feature_names_out()
+
+
+    if hasattr(X_transformed, "toarray"):
+        X_transformed = X_transformed.toarray()
+
+
+    mi_scores = mutual_info_selection(X_transformed, y)
 
     plot_feature_importance(mi_scores, feature_names)
 
+    print(f"Success! Processed {X_transformed.shape[1]} features.")
     print("Feature importance plot generated at src/evaluation/feature_importance.png")
