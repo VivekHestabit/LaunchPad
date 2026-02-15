@@ -8,8 +8,6 @@ function debounce(fn, delay) {
   };
 }
 
-// throttle fucntion :
-
 function throttle(fn, limit) {
   let flag = true;
   return function (...args) {
@@ -20,8 +18,6 @@ function throttle(fn, limit) {
     }
   };
 }
-
-// group by function :
 
 function groupBy(arr, key) {
   return arr.reduce((acc, item) => {
