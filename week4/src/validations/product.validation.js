@@ -1,8 +1,23 @@
 const { z } = require('zod');
+const sanitizeHtml = require('sanitize-html');
+
+const clean = (val) =>
+  sanitizeHtml(val, {
+    allowedTags: [],
+    allowedAttributes: {},
+  });
 
 const createProductSchema = z
   .object({
-    name: z.string().trim().min(3).max(100),
+    name: z
+      .string()
+      .trim()
+      .min(3)
+      .max(100)
+      .transform(clean)
+      .refine((val) => val.length >= 3, {
+        message: 'Name must be at least 3 characters',
+      }),
     description: z.string().trim().max(500).optional(),
     price: z.number().positive(),
     tags: z.array(z.string().trim()).optional(),

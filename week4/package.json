@@ -23,9 +23,11 @@
     "hpp": "^0.2.3",
     "joi": "^18.0.2",
     "mongoose": "^9.0.2",
+    "sanitize-html": "^2.17.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",
+    "xss-clean": "^0.1.4",
     "z": "^1.0.9",
     "zod": "^4.3.4"
   },

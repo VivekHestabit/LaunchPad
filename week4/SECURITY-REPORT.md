@@ -1,12 +1,14 @@
 Manual Security test cases :-> 
-
+```
 1. Payload whitelisting:->
     {
   "name": "Phone",
   "price": 300,
   "isAdmin": true -> This will get stripped
 }
+```
 
+```
 Result :-> 
     {
     "success": false,
@@ -15,15 +17,16 @@ Result :->
         "Unrecognized key: \"isValid\""
     ]
 }
+```
 
-
+```
 2.Wrong Datatype :->
     {
   "name": "Phone",
   "price": "cheap"
 }
-
-
+```
+```
 Result :->
     {
     "success": false,
@@ -32,12 +35,12 @@ Result :->
         "Invalid input: expected number, received string"
     ]
 }
-
+```
+```
 3.NoSQL injection :->
     {
   "email": { "$gt": "" }
 }
-
 Result :->
     {
     "success": false,
@@ -46,8 +49,10 @@ Result :->
         "Invalid input: expected string, received object" // expected String and recieved object due to NoSQL injection
     ]
 }
+```
 
 
+```
 4. Rate limiting :-> 
 
 max = 10 , times a user can hit this end point :-> http://localhost:3000/api/register/
@@ -55,8 +60,8 @@ max = 10 , times a user can hit this end point :-> http://localhost:3000/api/reg
 Hitting more than that : -> 
 
 res =>  Too many requests, please try again later.
-
-
+```
+```
 5. Paload Size limits :->
 
 max size of the payload  :-> 10kb
@@ -83,7 +88,8 @@ Res => PayloadTooLargeError: request entity too large
     at processParams (/home/viveksingh/Desktop/Launchpad/week4/node_modules/router/index.js:582:12)
     at next (/home/viveksingh/Desktop/Launchpad/week4/node_modules/router/index.js:291:5)
     at router.handle (/home/viveksingh/Desktop/Launchpad/week4/node_modules/router/index.js:186:3)
-
+```
+```
 6. helmet() => Nodejs middleware for experss 
 eg -> Different origin cannot embed our site page : in an iframe : 
 
@@ -96,3 +102,4 @@ and in the src = "http://localhost:3000/api/register" now attacker tries to acce
 Framing 'http://localhost:3000/' violates the following Content Security Policy directive: "frame-ancestors 'self'". The request has been blocked.
 
 due to helmet middleware , which has this : X-Frame-Options: SAMEORIGIN , in the header will not allow to embed this page to different website or different origin ....
+```

@@ -4,7 +4,7 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 1 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
@@ -13,7 +13,7 @@ const apiLimiter = rateLimit({
 const securityMiddlewares = [
   helmet(),
   cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://127.1.0.1:5501'],
     credentials: true,
   }),
   apiLimiter,

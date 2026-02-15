@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fetch Example</title>
 </head>
 <body>
-    <iframe src="http://localhost:3000/api/register/"></iframe>
+
+    <button id="fetchBtn">Fetch Data</button>
+
+    <script>
+        document.getElementById("fetchBtn").addEventListener("click", async () => {
+            try {
+                const response = await fetch("http://localhost:3005/api/products");
+                const data = await response.text();
+                console.log(data);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+
 </body>
 </html>
