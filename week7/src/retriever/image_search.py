@@ -9,14 +9,13 @@ class ImageSearcher:
         self,
         collection_name="image_rag",
         top_k=5,
-        qdrant_path="src/vectorstore/qdrant"
+        qdrant_url="http://localhost:6333"
     ):
         self.top_k = top_k
         self.collection_name = collection_name
-        self.qdrant = QdrantClient(path=qdrant_path)
+        self.qdrant = QdrantClient(url=qdrant_url)
         self.clip = CLIPEmbedder()
 
-        self._ensure_collection_exists()
 
     def _ensure_collection_exists(self):
         if not self.qdrant.collection_exists(self.collection_name):
@@ -44,6 +43,8 @@ class ImageSearcher:
             query=query_vector,
             limit=self.top_k
         ).points
+        
+        print("RAW RESULTS COUNT:", len(results))
 
         return self._format_results(results)
 
@@ -74,6 +75,7 @@ class ImageSearcher:
         formatted = []
 
         for r in results:
+            print("RAW PAYLOAD:", r.payload)
             formatted.append({
                 "id": r.id,
                 "score": r.score,

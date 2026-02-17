@@ -15,10 +15,10 @@ class ImageIngestor:
     def __init__(
         self,
         collection_name="image_rag",
-        qdrant_path="src/vectorstore/qdrant"
+        qdrant_url="http://localhost:6333"
     ):
         self.collection_name = collection_name
-        self.qdrant = QdrantClient(path=qdrant_path)
+        self.qdrant = QdrantClient(url=qdrant_url)
         self.clip = CLIPEmbedder()
 
         self._ensure_collection()
@@ -67,7 +67,7 @@ class ImageIngestor:
 
         ocr_text = self.extract_ocr(image)
         caption = self.generate_caption(image)
-        image_vector = self.clip.embed_image(image_path)
+        image_vector = self.clip.embed_image(image_path).tolist()
 
         point = PointStruct(
             id=str(uuid.uuid4()),
@@ -80,6 +80,11 @@ class ImageIngestor:
                 "ocr_text": ocr_text
             }
         )
+        
+        print("INGEST VECTOR TYPE:", type(image_vector))
+        print("INGEST VECTOR DIM:", len(image_vector))
+        print("INGEST VECTOR SAMPLE:", image_vector[:5])
+
 
         self.qdrant.upsert(
             collection_name=self.collection_name,
@@ -95,9 +100,12 @@ class ImageIngestor:
 
 if __name__ == "__main__":
 
-    IMAGE_ROOT = "./src/data/raw/Images"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    IMAGE_ROOT = os.path.join(BASE_DIR, "..", "data", "raw", "Images")
 
     ingestor = ImageIngestor()
+
+    count = 0
 
     for root, _, files in os.walk(IMAGE_ROOT):
         for file_name in files:
@@ -113,5 +121,10 @@ if __name__ == "__main__":
             )
 
             print("Ingested:", image_path)
+            count += 1
 
-    print("\nALL IMAGES INGESTED SUCCESSFULLY\n")
+    if count == 0:
+        print("❌ NO IMAGES FOUND — NOTHING INGESTED")
+    else:
+        print(f"✅ {count} IMAGES INGESTED SUCCESSFULLY")
+

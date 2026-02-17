@@ -13,7 +13,7 @@ class HybridRetriever:
     def __init__(self, top_k=5):
 
         self.top_k = top_k
-        self.client = QdrantClient(path="src/vectorstore/qdrant")
+        self.client = QdrantClient(url="http://localhost:6333")
         self.model = SentenceTransformer(EMBEDDING_MODEL_NAME)
         self.embeddings = np.load(EMBEDDINGS_DATA_PATH)
         
