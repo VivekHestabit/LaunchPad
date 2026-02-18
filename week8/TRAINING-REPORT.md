@@ -204,7 +204,7 @@ Total training time: approximately **16 minutes 39 seconds** on a T4 GPU.
 **Final training loss:** 0.9206  
 **Total steps:** 963
 
-### Browser Response → backend1
+### Epoch results : 
 ![After 3 iterations of Epoch Results : ](../week8/screenshots/Epoch%20results.png)
 
 ---
