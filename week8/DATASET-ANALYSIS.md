@@ -1,188 +1,173 @@
-# Dataset Analysis — Week 8 (Day 1)
-LLM Architecture & Data Preparation for Fine-Tuning
+# Day 1 — LLM Architecture + Data Prep for Fine-Tuning
+
+## Overview
+
+This repository contains the work completed for **Day 1** of the LLM Fine-Tuning challenge. The focus of this day was on understanding the core architecture of Large Language Models and building a clean, curated **instruction-tuning dataset** for the **Healthcare / Medical** domain from scratch.
 
 ---
 
-## 1. Domain Overview
-**Domain:** Healthcare  
-**Dataset Type:** Instruction Tuning Dataset  
-**Use Case:** Medical question answering, reasoning, and information extraction for LLM fine-tuning
+## Learning Outcomes
+
+- LLM anatomy — layers, attention mechanisms, and Feed-Forward Networks (FFN)
+- Tokenization strategies and vocabulary design
+- Difference between instruction tuning and pretraining
+- LoRA & PEFT fundamentals
 
 ---
 
-## 2. Source Dataset
-- Original dataset size: **33,955 samples**
-- Format: Hugging Face Dataset (Arrow-based)
-- Fields:
-  - `instruction`
-  - `input`
-  - `output`
+## Topics Covered
 
-The original dataset primarily consisted of **QA-style medical flashcards**.
+- Transformer blocks and how they are structured
+- Parameter count vs model performance trade-offs
+- What fine-tuning actually changes inside a model
+- Prompt-completion format vs chat format
+- Instruction dataset design principles
 
 ---
 
-## 3. Motivation for Dataset Reduction
-Although the source dataset was large, the goal of **Week 8 Day 1** is to:
-- Validate the fine-tuning pipeline
-- Enable fast iteration and debugging
-- Understand instruction design and data behavior
+## Datasets Used
 
-Therefore, the dataset was **intentionally reduced to 1,500 high-quality samples**, which is:
-- Above the required minimum (1,000)
-- Sufficient for instruction tuning experiments
-- Computationally efficient for LoRA-based fine-tuning
+Three datasets were sourced and combined to cover all required task types in the **Medical / Healthcare** domain.
 
-The full dataset is retained separately for future scaling.
+### 1. QA — `medalpaca/medical_meadow_medical_flashcards`
+- **Source:** Hugging Face
+- **Task Type:** Question Answering (QA)
+- **Description:** Medical flashcard-style QA pairs covering a wide range of clinical and biomedical topics. Used as the direct instruction-response component of the dataset.
+- **Prompt Template:**
+  ```
+  Instruction: Answer the medical question accurately.
+  Input: {question}
+  Output: {answer}
+  ```
 
----
+### 2. Reasoning — `FreedomIntelligence/medical-o1-reasoning-SFT`
+- **Source:** Hugging Face
+- **Task Type:** Reasoning
+- **Description:** A medical reasoning dataset built in the style of OpenAI's o1, containing complex chain-of-thought answers to medical questions. The output combines the full reasoning trace followed by a final answer.
+- **Prompt Template:**
+  ```
+  Instruction: Answer the medical question with step-by-step reasoning.
+  Input: {Question}
+  Output: {Complex_CoT} + Final Answer: {Response}
+  ```
 
-## 4. Instruction Task Design
-To ensure behavioral diversity, the dataset was curated to include **three instruction types**:
-
-### 4.1 QA (Question Answering)
-- Direct factual medical questions
-- Example:
-  - *"What is hypertension?"*
-
-### 4.2 Reasoning
-- Step-by-step explanations of medical concepts
-- Derived from QA samples
-- Example:
-  - *"Explain the medical concept step by step."*
-
-### 4.3 Extraction
-- Structured information extraction tasks
-- Derived from QA samples
-- Example:
-  - *"Extract the key medical concept from the passage."*
-
-### Final Task Distribution
-| Task Type   | Samples |
-|------------|---------|
-| QA         | 500     |
-| Reasoning  | 500     |
-| Extraction | 500     |
-| **Total**  | **1500** |
-
-This ensures balanced instruction-following behavior during fine-tuning.
+### 3. Extraction — `Fine-Tuning-LLMs-for-Medical-Entity-Extraction`
+- **Source:** GitHub Repository
+- **Task Type:** Named Entity Extraction
+- **Description:** A dataset focused on extracting structured medical entities — specifically drug names and adverse events — from unstructured clinical/medical reports.
+- **Prompt Template:**
+  ```
+  Instruction: Extract the drug name and adverse events from the report.
+  Input: {report text}
+  Output: {extracted entities}
+  ```
 
 ---
 
-## 5. Data Cleaning Strategy
-Cleaning focused on **training stability and efficiency**, not linguistic normalization.
+## Dataset Format
 
-### 5.1 Structural Validation
-- Ensured all samples strictly follow:
+All samples are stored in **JSONL** format with the following schema:
+
 ```json
 {"instruction": "...", "input": "...", "output": "..."}
 ```
 
-## 5. Data Cleaning and Analysis
+---
 
-### 5.2 Token Length Analysis
-Approximate token length was calculated using whitespace-based splitting:
+## Exercise — Building the Instruction Tuning Dataset
 
-token_len = len(instruction + input + output)
+### Requirements Checklist
 
+| Requirement             | Status |
+|-------------------------|--------|
+| QA samples              | ✅     |
+| Reasoning samples       | ✅     |
+| Extraction samples      | ✅     |
+| Minimum 1,000 samples   | ✅     |
+| Clean & curated         | ✅     |
+| Domain-based (Medical)  | ✅     |
 
-This approximation was used to estimate sequence length before selecting a model-specific tokenizer.
+### Analysis Performed
+
+- Token length analysis across all samples
+- Distribution graphs for combined dataset lengths
+- Outlier removal — samples above the **95th percentile** of token length were dropped
 
 ---
 
-### 5.3 Distribution Visualization
-The following visual analyses were performed:
+## Data Cleaning Pipeline — `utils/data_cleaner.py`
 
-- **Token Length Distribution**
-  - A histogram was generated to observe the distribution of token lengths.
-  - This helped identify unusually long samples (outliers).
+The script handles the full pipeline from raw data loading to final JSONL output.
 
-- **Task-Type Distribution**
-  - A bar chart was generated to verify the balance between:
-    - QA
-    - Reasoning
-    - Extraction
-  - Ensured no single instruction type dominated the dataset.
+### Step 1 — Load & Format Each Dataset
 
-All plots were saved to disk for reproducibility.
+Each dataset is loaded independently, shuffled with a fixed seed (`SEED = 42`), and **500 samples** are selected per task type. Each is then mapped to the standard `instruction / input / output` format using dedicated formatter functions:
 
----
+- `format_qa()` — formats QA flashcard samples
+- `format_reasoning()` — combines CoT trace and final answer for reasoning samples
+- `format_extraction()` — formats drug/adverse event extraction samples
 
-### 5.4 Outlier Removal
-To improve training stability, a **95th percentile cutoff** was applied to token lengths.
+### Step 2 — Merge Datasets
 
-Extremely long samples were removed to:
+All three formatted datasets are concatenated into a single unified dataset using `concatenate_datasets()`, resulting in **1,500 raw samples** before cleaning.
 
-- Prevent memory inefficiency
-- Avoid training instability
-- Ensure consistent batch sizes during fine-tuning
+### Step 3 — Token Length Analysis & Outlier Removal
 
-This approach preserves most of the dataset while removing harmful extremes.
+Token length is computed per sample by splitting the full concatenated text (`instruction + input + output`) on whitespace. Samples exceeding the **95th percentile** token length are removed as outliers.
 
----
+```python
+def token_length(sample):
+    text = f"{sample['instruction']} {sample['input']} {sample['output']}"
+    return len(text.split())
 
-## 6. Train / Validation Split
-After cleaning, the dataset was split as follows:
+max_len = np.percentile(lengths, 95)
+cleaned = [s for s, l in zip(final_ds, lengths) if l <= max_len]
+```
 
-- **Train set:** ~90%
-- **Validation set:** ~10%
+### Step 4 — Train / Validation Split
 
-The split was:
-- Randomized
-- Performed using a fixed random seed for reproducibility
+After cleaning, samples are shuffled and split at a **90/10 ratio**:
 
-This enables:
-- Proper evaluation during training
-- Early detection of overfitting
+| Split      | Proportion |
+|------------|------------|
+| Train      | 90%        |
+| Validation | 10%        |
 
----
+### Step 5 — Save as JSONL
 
-## 7. Final Dataset Artifacts
-The following files were generated as final deliverables:
+Final outputs are saved to the `/data` directory:
 
-data/
-├── train.jsonl
-└── val.jsonl
+```
+/data/train.jsonl
+/data/val.jsonl
+```
 
-utils/
-├── data_cleaner.py
-└── Analyze_data.py
+### Key Configuration
 
-outputs/
-├── token_length_distribution.png
-└── task_type_distribution.png
-
+| Parameter         | Value           |
+|-------------------|-----------------|
+| Samples per type  | 500             |
+| Total raw samples | 1,500           |
+| Outlier threshold | 95th percentile |
+| Train/Val split   | 90 / 10         |
+| Random seed       | 42              |
 
 ---
 
-## 8. Tooling & Scripts
+## Deliverables
 
-### 8.1 `utils/data_cleaner.py`
-Responsible for dataset preparation and cleaning:
-
-- Dataset sampling (1500 samples)
-- Task augmentation (QA / Reasoning / Extraction)
-- Token-length based outlier removal
-- Train / validation split
-- Exporting data in JSONL format
-
----
-
-### 8.2 `utils/Analyze_data.py`
-Responsible for dataset validation and visualization:
-
-- Token length distribution analysis
-- Instruction / task-type distribution analysis
-- Plot generation (saved to disk for non-interactive environments)
+```
+/data/train.jsonl           ✅
+/data/val.jsonl             ✅
+/utils/data_cleaner.py      ✅
+DATASET-ANALYSIS.md         ✅
+README.md                   ✅
+```
 
 ---
 
-## 9. Outcome
-At the end of Day 1:
+## Dependencies
 
-- A clean, balanced, and curated instruction dataset was created
-- The dataset is ready for **LoRA / PEFT fine-tuning**
-- Analysis confirms:
-  - Controlled token lengths
-  - Balanced instruction types
-  - Training stability readiness
+```bash
+pip install datasets numpy
+```

@@ -1,27 +1,35 @@
 import os
 import json
 import numpy as np
-from datasets import load_from_disk, concatenate_datasets
+from datasets import load_from_disk, load_dataset, concatenate_datasets
 
-
-DATASET_PATH = "/home/viveksingh/Desktop/Launchpad/week8/raw-data/medical_instruction_dataset"
-OUTPUT_DIR = "data"
-TOTAL_SAMPLES = 1500
 SEED = 42
+SAMPLES_PER_TYPE = 500
+OUTPUT_DIR = "data"
+
+np.random.seed(SEED)
 
 
-def make_extraction_sample(example):
+def format_qa(example):
     return {
-        "instruction": "Extract the key medical concept from the passage.",
-        "input": example["output"],
-        "output": example["instruction"].replace("What is ", "").replace("?", "")
+        "instruction": "Answer the medical question accurately.",
+        "input": example.get("instruction", ""),
+        "output": example["output"]
     }
 
 
-def make_reasoning_sample(example):
+def format_reasoning(example):
     return {
-        "instruction": "Explain the medical concept step by step.",
-        "input": example["instruction"],
+        "instruction": "Answer the medical question with step-by-step reasoning.",
+        "input": example["Question"],
+        "output": example["Complex_CoT"] + "\nFinal Answer: " + example["Response"]
+    }
+
+
+def format_extraction(example):
+    return {
+        "instruction": "Extract the drug name and adverse events from the report.",
+        "input": example["input"],
         "output": example["output"]
     }
 
@@ -34,37 +42,44 @@ def token_length(sample):
 def save_jsonl(samples, path):
     with open(path, "w") as f:
         for s in samples:
-            f.write(json.dumps({
-                "instruction": s["instruction"],
-                "input": s["input"],
-                "output": s["output"]
-            }) + "\n")
+            f.write(json.dumps(s) + "\n")
 
 
 def main():
-    dataset = load_from_disk(DATASET_PATH)["train"]
+  
+    qa_ds = load_from_disk("../raw-data/qa_medical_flashcards")
+    qa_ds = qa_ds.shuffle(seed=SEED).select(range(SAMPLES_PER_TYPE))
+    qa_ds = qa_ds.map(format_qa)
 
-    qa_data = dataset.select(range(0, 500))
-    reasoning_data = dataset.select(range(500, 1000)).map(make_reasoning_sample)
-    extraction_data = dataset.select(range(1000, 1500)).map(make_extraction_sample)
+   
+    reasoning_ds = load_from_disk("../raw-data/reasoning_medical_o1")
+    reasoning_ds = reasoning_ds.shuffle(seed=SEED).select(range(SAMPLES_PER_TYPE))
+    reasoning_ds = reasoning_ds.map(format_reasoning)
 
-    ## Adding commnets for my understanding :- Below is the final length of data
-    final_data = concatenate_datasets([qa_data, reasoning_data, extraction_data]) 
+   
+    extraction_ds = load_dataset(
+        "json",
+        data_files="../raw-data/Extraction_dataset/extraction.json",
+        split="train"
+    )
+    extraction_ds = extraction_ds.shuffle(seed=SEED).select(range(SAMPLES_PER_TYPE))
+    extraction_ds = extraction_ds.map(format_extraction)
 
-    lengths = [token_length(s) for s in final_data]
-    ##95 % values are smaller than this max_lenthj
+    ##Here i have merged the Datasets:->
+    final_ds = concatenate_datasets([qa_ds, reasoning_ds, extraction_ds])
+
+
+    lengths = [token_length(s) for s in final_ds]
     max_len = np.percentile(lengths, 95)
 
     cleaned = [
-        s for s, l in zip(final_data, lengths) if l <= max_len
+        s for s, l in zip(final_ds, lengths) if l <= max_len
     ]
 
-    np.random.seed(SEED)
-    ## shuffling so that models see diverse instruction early : 
     np.random.shuffle(cleaned)
-    ## from where splitting start : in my case total : Total samples : 1,426 * 0.9 => 1283 
+
+    ##Train/val split :->
     split_idx = int(len(cleaned) * 0.9)
-    
     train_samples = cleaned[:split_idx]
     val_samples = cleaned[split_idx:]
 
@@ -72,6 +87,7 @@ def main():
     save_jsonl(train_samples, os.path.join(OUTPUT_DIR, "train.jsonl"))
     save_jsonl(val_samples, os.path.join(OUTPUT_DIR, "val.jsonl"))
 
+    print(f"Total samples after cleaning: {len(cleaned)}")
     print(f"Train samples: {len(train_samples)}")
     print(f"Validation samples: {len(val_samples)}")
 
