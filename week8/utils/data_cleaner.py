@@ -13,7 +13,7 @@ np.random.seed(SEED)
 def format_qa(example):
     return {
         "instruction": "Answer the medical question accurately.",
-        "input": example.get("instruction", ""),
+        "input": example["input"],
         "output": example["output"]
     }
 
