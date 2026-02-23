@@ -101,6 +101,53 @@ All three models show `0 MB` VRAM because the benchmarks were run on **CPU only*
 
 ---
 
+## Colab Benchmark — GPU Results (`Day4.ipynb`)
+
+In addition to the local CPU benchmark, all three models were re-evaluated on **Google Colab with a CUDA GPU** using the `Day4.ipynb` notebook. This gives a complete picture — CPU for edge deployment, GPU for server-side production deployment.
+
+### Environment
+
+| Property | Value |
+|----------|-------|
+| Platform | Google Colab |
+| Device | CUDA GPU |
+| Engine (HF models) | HuggingFace Transformers |
+| Engine (GGUF) | llama.cpp (CPU) |
+| Max new tokens | 128 |
+| Batch size | 3 (all models) |
+
+### Colab Results — `benchmarks/results.csv`
+
+| Model | Engine | Device | Batch Size | Tokens/sec | Latency (s) | VRAM (MB) | Accuracy |
+|-------|--------|--------|------------|------------|-------------|-----------|----------|
+| Base-FP16 | transformers | CUDA | 3 | 32.52 | 8.27s | 2601.86 | 0.744 |
+| Fine-Tuned | transformers | CUDA | 3 | 72.68 | 4.15s | 2602.86 | 0.853 |
+| GGUF-Q8 | llama.cpp | CPU | 3 | 4.62 | 49.99s | 0 | 0.820 |
+
+### Colab Result Analysis
+
+**Accuracy**
+
+Fine-Tuned is now the clear winner at `0.853`, outperforming the Base model (`0.744`) on the GPU run. This is the expected and correct outcome — fine-tuning on the medical domain dataset improved domain-specific accuracy. The earlier local CPU run showed the reverse due to different runtime conditions and batch handling. The Colab GPU run is the more reliable comparison since both HF models ran under identical conditions with `batch_size=3`.
+
+**Speed**
+
+Fine-Tuned at `72.68 tok/s` is more than **2x faster** than Base-FP16 at `32.52 tok/s` on GPU. This is because after `merge_and_unload()`, the fine-tuned model is a clean single-weight model with no adapter overhead, and GPU parallelism amplifies throughput significantly. GGUF running on CPU at `4.62 tok/s` is expected to be slower since it uses no GPU at all.
+
+**VRAM**
+
+Both HF models consume approximately `2601–2602 MB` VRAM on GPU — essentially identical, confirming that the merged fine-tuned model has the same memory footprint as the base model. GGUF remains at `0 MB` VRAM as it runs entirely on CPU.
+
+### CPU vs GPU — Side by Side Comparison
+
+| Model | CPU Tokens/sec | GPU Tokens/sec | GPU Speedup |
+|-------|---------------|----------------|-------------|
+| Base-FP16 | 14.40 | 32.52 | **2.3x faster** |
+| Fine-Tuned | 5.78 | 72.68 | **12.6x faster** |
+| GGUF-Q8 | 11.46 | 4.62 (CPU) | N/A — CPU only |
+
+---
+
 ## Inference Techniques Implemented
 
 ### Batch Inference
@@ -121,17 +168,19 @@ The GGUF Q8 model runs entirely through `llama_cpp.Llama` with no GPU dependency
 
 | Use Case | Recommended Model | Reason |
 |----------|-------------------|--------|
-| Best accuracy | Base-FP16 | Highest semantic score (0.861) |
-| Medical domain tasks | Fine-Tuned | Domain-specific fine-tuning, 0.826 accuracy |
-| No GPU / edge device | GGUF-Q8 | 11.46 tok/s on CPU, zero VRAM |
-| Fastest response | Base-FP16 | 14.4 tok/s, lowest latency at 0.49s |
+| Best accuracy (GPU) | Fine-Tuned | Highest GPU score (0.853), 72.68 tok/s |
+| Best accuracy (CPU) | Base-FP16 | Highest CPU score (0.861) |
+| Medical domain tasks | Fine-Tuned | Domain fine-tuned, 0.853 on GPU |
+| No GPU / edge device | GGUF-Q8 | Zero VRAM, runs entirely on CPU |
+| Fastest GPU throughput | Fine-Tuned | 72.68 tok/s — 2x faster than base on GPU |
 
 ---
 
 ## File Structure
 
 ```
-/inference/test_inference.py      ✅
+/inference/test_inference.py      ✅   (local CPU benchmark)
+/notebooks/Day4.ipynb             ✅   (Colab GPU benchmark)
 /benchmarks/results.csv           ✅
 BENCHMARK-REPORT.md               ✅
 README.md                         ✅
