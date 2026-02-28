@@ -1,6 +1,5 @@
 import requests
 import sys
-import uuid
 
 API_URL_CHAT = "http://localhost:8000/chat"
 
@@ -22,13 +21,17 @@ def single_prompt_mode(prompt: str):
         "top_k": 40
     }
 
-    response = requests.post(API_URL_CHAT, json=payload)
+    response = requests.post(API_URL_CHAT, json=payload, stream=True)
 
-    if response.status_code == 200:
-        print("\n--- Assistant ---")
-        print(response.json()["assistant_reply"])
-    else:
+    if response.status_code != 200:
         print("Error communicating with backend")
+        return
+
+    for chunk in response.iter_content(chunk_size=None):
+        if chunk:
+            print(chunk.decode("utf-8"), end="", flush=True)
+
+    print()
 
 
 def interactive_chat_mode():
@@ -40,7 +43,7 @@ def interactive_chat_mode():
     while True:
         user_input = input("> ")
 
-        if user_input.lower() in ["exit", "quit"]:
+        if user_input.lower() in ("exit", "quit"):
             print("Goodbye!")
             break
 
@@ -53,23 +56,27 @@ def interactive_chat_mode():
             "top_k": 40
         }
 
-        response = requests.post(API_URL_CHAT, json=payload)
+        response = requests.post(API_URL_CHAT, json=payload, stream=True)
 
-        if response.status_code == 200:
-            reply = response.json()["assistant_reply"]
-            print("\n--- Assistant ---")
-            print(reply + "\n")
-
-            messages.append({"role": "assistant", "content": reply})
-        else:
+        if response.status_code != 200:
             print("Error communicating with backend")
+            continue
 
+        print("\n--- Assistant ---")
 
-# ===================== ENTRY POINT =====================
+        reply = ""
+        for chunk in response.iter_content(chunk_size=None):
+            if chunk:
+                text = chunk.decode("utf-8")
+                reply += text
+                print(text, end="", flush=True)
+
+        print()
+        messages.append({"role": "assistant", "content": reply})
+
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        prompt = " ".join(sys.argv[1:])
-        single_prompt_mode(prompt)
+    if len(sys.argv) > 1: ## sys.argv is a list of CLI arguments .. 
+        single_prompt_mode(" ".join(sys.argv[1:]))
     else:
         interactive_chat_mode()
