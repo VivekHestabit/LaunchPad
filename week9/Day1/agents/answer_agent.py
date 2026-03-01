@@ -9,7 +9,6 @@ answer_agent = AssistantAgent(
         "You are an Answer Agent.\n"
         "Answer ONLY using the provided summary.\n"
         "Be concise and relevant to the question.\n"
-        "If info is missing, say 'Not enough data.'\n"
     ),
     model_client=llm_client,    
 )
