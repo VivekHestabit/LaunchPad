@@ -18,6 +18,5 @@ class LLMclient:
                 "vision": False,
                 "json_output": False,
                 "structured_output": False,
-            },
-            response_format=response_structure if response_structure else None,
+            }
         )
