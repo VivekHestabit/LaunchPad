@@ -135,7 +135,7 @@ Handles all file operations:
 
 ## Screenshot : 
 
-![Question -> Answer ](./TOOL-CHAIN.md)
+![Question -> Answer ](./Day3_image.png)
 
 ## Tools Created
 
