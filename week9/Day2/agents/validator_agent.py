@@ -10,7 +10,7 @@ class ValidationResult(BaseModel):
     issues: List[str] = []
 
 
-class ValidatorAgent:
+class ValidatorAgent: ## Checks whether the answer is aligining to the user query
     def __init__(self):
         self.agent = AssistantAgent(
             name="validator",

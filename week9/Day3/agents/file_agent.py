@@ -38,5 +38,5 @@ STRICT RULES:
 - The database path for CSV loading is: "sales.db"
 - Base your final answer ONLY on tool outputs.
 """,
-    tools=FILE_TOOLS,
+    tools=FILE_TOOLS, ## Autogen collects tool schemas and bundle them in LLM requests ... 
 )

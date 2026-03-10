@@ -14,7 +14,7 @@ WORKER_LIMIT = 3
 
 
 def build_execution_graph(plan: PlannerResult, llm_client):
-    builder = DiGraphBuilder()
+    builder = DiGraphBuilder() ## In this graph each node represent one agent instance ... 
 
     reflector = AssistantAgent(
         name="reflector",
@@ -51,7 +51,7 @@ def build_execution_graph(plan: PlannerResult, llm_client):
 
 
 def parse_validation_output(raw_text: str) -> ValidationResult:
-    cleaned = raw_text.strip().replace("```json", "").replace("```", "")
+    cleaned = raw_text.strip().replace("```json", "").replace("```", "") ## Converts the string response to JSON format ... 
     try:
         return ValidationResult.model_validate_json(cleaned)
     except ValidationError as e:
@@ -105,7 +105,7 @@ async def main():
     validation = parse_validation_output(validator_raw_output)
 
 
-    if validation.is_valid:
+    if validation.is_valid: ## If validation is true show the reflector_output ... 
         print("\nFINAL ANSWER\n")
         print(reflector_output)
     else:
