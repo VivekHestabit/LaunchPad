@@ -38,16 +38,16 @@ def compute_levels(execution_plan):
 
     for step in execution_plan.steps:
         in_degree.setdefault(step.agent, 0)
-        in_degree[step.agent] = len(step.depends_on)
+        in_degree[step.agent] = len(step.depends_on) ## calculating the number of dependencies ...
 
         for dep in step.depends_on:
-            graph[dep].append(step.agent)
-            in_degree.setdefault(dep, 0)
+            graph[dep].append(step.agent) ## Add agents into the graph ...
+            in_degree.setdefault(dep, 0) # Defualt is 0 ..
 
-    queue = deque([n for n in in_degree if in_degree[n] == 0])
+    queue = deque([n for n in in_degree if in_degree[n] == 0]) ## Agents with 0 dep starts immedi... 
     levels = []
 
-    while queue:
+    while queue: ## Then this loop process the DAG ... 
         level = list(queue)
         levels.append(level)
         next_queue = deque()
@@ -146,7 +146,7 @@ async def run_level(level_agents, step_map, context, user_query):
 
 async def execute_plan(execution_plan, user_query):
 
-    levels = compute_levels(execution_plan)
+    levels = compute_levels(execution_plan) ## It converts dependencies into execution levels ...
 
     step_map = {step.agent: step.instruction for step in execution_plan.steps}
 
@@ -168,10 +168,10 @@ async def execute_plan(execution_plan, user_query):
                 if "FAIL" in res["output"].upper() or "REJECTED" in res["output"].upper():
                     raise Exception(f"VALIDATION_FAIL::{res['output']}")
 
-    return global_context
+    return global_context ## IT contains output of all agents ... 
 
 
-async def run_autonomous_loop(initial_plan, user_query):
+async def run_autonomous_loop(initial_plan, user_query): ## its running this loop : MAX_PLAN_RETRIES times and check for output ... 
 
     current_plan = initial_plan
     validator_feedback = None

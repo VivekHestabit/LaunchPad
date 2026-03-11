@@ -44,7 +44,7 @@ USER REQUEST:
 {query}
 
 MEMORY CONTEXT:
-{memory_context[:1500]}
+{memory_context[:800]}
 """
 
     result = await planner.run(
@@ -54,13 +54,13 @@ MEMORY CONTEXT:
     raw = result.messages[-1].content
 
     try:
-        plan_data = json.loads(raw)
+        plan_data = json.loads(raw) ## This converts into a python dictionary ... 
 
-    except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", raw, re.DOTALL)
+    except json.JSONDecodeError: ## sometimes LLM doesnt return simple JSON text it mixes it with other extra text ... 
+        match = re.search(r"\{.*\}", raw, re.DOTALL) ## this return the exact text .. 
 
         if match:
-            plan_data = json.loads(match.group())
+            plan_data = json.loads(match.group()) ## this returns the exact JSON format 
         else:
             raise ValueError(f"Planner returned non-JSON response:\n{raw}")
 
