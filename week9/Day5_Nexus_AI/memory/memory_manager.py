@@ -2,7 +2,6 @@ import uuid
 import json
 import os
 import re
-
 from openai import OpenAI
 
 from .session_memory import SessionMemory
@@ -10,8 +9,8 @@ from .vector_store import VectorStore
 from .long_term_store import LongTermMemory
 
 
-SIM_THRESHOLD = 0.80
-DUP_THRESHOLD = 0.93
+SIM_THRESHOLD = 0.65
+DUP_THRESHOLD = 0.90
 
 
 def clean_llm_json(text: str):
@@ -70,16 +69,17 @@ class MemoryManager:
     def summarize(self, text: str):
 
         prompt = f"""
-Extract LONG-TERM USER FACTS.
+Extract LONG TERM USER FACTS.
 
-Store only facts that describe:
+Store facts about:
+- user identity (name, company, job, location)
 - user preferences
 - user goals
 - user projects
 - user skills
 - user constraints
 
-Ignore greetings, explanations, and temporary chat context.
+Ignore greetings and temporary chat context.
 
 Return JSON list.
 
@@ -143,12 +143,19 @@ AGENT RESPONSE:
 
         facts = self.long_term.get_by_ids(memory_ids)
 
-        return f"""
-SESSION MEMORY:
-{session_context}
+        session_text = ""
 
-RELEVANT FACTS:
-{facts}
+        for role, message in session_context:
+            session_text += f"{role}: {message}\n"
+
+        facts_text = "\n".join(facts) if facts else "None"
+
+        return f"""
+SESSION MEMORY
+{session_text}
+
+RELEVANT FACTS
+{facts_text}
 """
 
 

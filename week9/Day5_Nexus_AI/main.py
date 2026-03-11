@@ -101,59 +101,66 @@ async def run_nexus(query, clear_output=False):
 
 async def main():
 
-    query = input("Enter your task: ").strip()
+    print("\nNEXUS AI Interactive Shell")
+    print("Type 'exit' or 'quit' to stop.\n")
 
-    if not query:
-        print("No query provided. Exiting.")
-        return
+    while True:
 
-    clear = input("Clear previous output? (y/N): ").strip().lower() == "y"
+        query = input("Enter your task: ").strip()
 
-    try:
+        if not query:
+            print("Please enter a query.\n")
+            continue
 
-        result = await run_nexus(query, clear)
+        if query.lower() in ["exit", "quit"]:
+            print("Shutting down Nexus AI.")
+            break
 
-        print("\n" + "=" * 60)
-        print("EXECUTION COMPLETE")
-        print("=" * 60)
+        clear = input("Clear previous output? (y/N): ").strip().lower() == "y"
 
-        results = result.get("results", {})
+        try:
 
-        for agent_name, agent_result in results.items():
+            result = await run_nexus(query, clear)
 
-            if isinstance(agent_result, dict):
-                status = "✔" if agent_result.get("success") else "✘"
-                output = str(agent_result.get("output", ""))[:120]
-            else:
-                status = "✔"
-                output = str(agent_result)[:120]
+            print("\n" + "=" * 60)
+            print("EXECUTION COMPLETE")
+            print("=" * 60)
 
-            print(f"  {status} {agent_name}: {output}")
+            results = result.get("results", {})
 
-        print("=" * 60 + "\n")
+            for agent_name, agent_result in results.items():
 
-        create_log_entry(
-            str(LOG_FILE_PATH),
-            "system",
-            "run_complete",
-            {
-                "query": query,
-                "agents_run": list(results.keys()),
-            },
-        )
+                if isinstance(agent_result, dict):
+                    status = "✔" if agent_result.get("success") else "✘"
+                    output = str(agent_result.get("output", ""))[:120]
+                else:
+                    status = "✔"
+                    output = str(agent_result)[:120]
 
-    except Exception as e:
+                print(f"  {status} {agent_name}: {output}")
 
-        print(f"\n[FATAL ERROR] {e}")
+            print("=" * 60 + "\n")
 
-        create_log_entry(
-            str(LOG_FILE_PATH),
-            "system",
-            "fatal_error",
-            {"error": str(e)},
-        )
+            create_log_entry(
+                str(LOG_FILE_PATH),
+                "system",
+                "run_complete",
+                {
+                    "query": query,
+                    "agents_run": list(results.keys()),
+                },
+            )
 
-        raise
+        except Exception as e:
+
+            print(f"\n[FATAL ERROR] {e}")
+
+            create_log_entry(
+                str(LOG_FILE_PATH),
+                "system",
+                "fatal_error",
+                {"error": str(e)},
+            )
 
 
 if __name__ == "__main__":
