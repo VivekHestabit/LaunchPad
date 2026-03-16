@@ -26,7 +26,7 @@ class HybridRetriever:
 
                 self.chunks.append(record)
 
-                self.corpus.append(
+                self.corpus.append( ## This basically stores all the keywords of chunks in a list ....  
                     record["text"].lower().split()
                 )
 
@@ -66,7 +66,7 @@ class HybridRetriever:
 
         tokenized_query = query.lower().split()
 
-        scores = self.bm25.get_scores(tokenized_query)
+        scores = self.bm25.get_scores(tokenized_query) ## Now rank-bm25 uses corpus which contains tokenized words for query ...
 
         top_indices = sorted(
             range(len(scores)),
@@ -94,7 +94,7 @@ class HybridRetriever:
         semantic_results = self.semantic_search(query)
         keyword_results = self.keyword_search(query)
 
-        combined = {}
+        combined = {} ## This is where a sort of deduplication is happening where key is chunk_index ....
 
         for result in semantic_results + keyword_results:
 
@@ -103,7 +103,7 @@ class HybridRetriever:
             if chunk_index not in combined:
                 combined[chunk_index] = result
             else:
-                combined[chunk_index]["retrieval_type"] = "hybrid"
+                combined[chunk_index]["retrieval_type"] = "hybrid" ## which means chunks exist in both searches..
 
         return list(combined.values())
     

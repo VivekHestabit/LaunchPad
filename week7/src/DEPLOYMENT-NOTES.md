@@ -4,7 +4,7 @@
 
 This capstone project integrates all components from Week 7 into a production-ready multimodal RAG system with memory, evaluation, and self-reflection capabilities. The system provides three core modes of operation: Text RAG, Image RAG, and SQL Question Answering.
 
-## 🎯 Learning Outcomes
+## Learning Outcomes
 
 - ✅ Conversational memory with context retention
 - ✅ Self-reflection and answer refinement loops
@@ -13,7 +13,7 @@ This capstone project integrates all components from Week 7 into a production-re
 - ✅ Production-ready API structure with FastAPI
 - ✅ Interactive Streamlit UI for user interaction
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -45,7 +45,7 @@ This capstone project integrates all components from Week 7 into a production-re
               └─────────────────┘
 ```
 
-## 📁 File Structure
+## File Structure
 
 ```
 src/
@@ -64,7 +64,7 @@ src/
 CHAT-LOGS.json              # Persistent conversation history
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -95,7 +95,7 @@ streamlit run src/ui.py
 - API: `http://localhost:8000`
 - UI: `http://localhost:8501`
 
-## 🔧 Core Components
+## Core Components
 
 ### 1. Memory Store (`memory_store.py`)
 
@@ -304,7 +304,7 @@ refined = evaluator.refine_answer(question, draft_answer, context)
 4. View results with evaluation metrics
 ```
 
-## 🔍 Memory and Context Management
+## Memory and Context Management
 
 ### Memory Retention
 
@@ -348,7 +348,7 @@ All conversations are logged to `CHAT-LOGS.json`:
 - Training data for model fine-tuning
 - User behavior analysis
 
-## 📊 Evaluation Framework
+## Evaluation Framework
 
 ### Faithfulness Scoring
 
@@ -396,7 +396,7 @@ def refine_answer(self, question, draft_answer, context):
 - Chain-of-thought reasoning for complex queries
 - Retrieval augmentation for low-confidence answers
 
-## 🛡️ Error Handling and Safety
+## Error Handling and Safety
 
 ### Input Validation
 
@@ -429,7 +429,7 @@ All API calls include timeout guards:
 resp = requests.post(endpoint, data=data, timeout=600)
 ```
 
-## 📈 Performance Optimization
+## Performance Optimization
 
 ### Context Serialization
 
@@ -463,7 +463,7 @@ def normalize_image_context(context):
     return normalized
 ```
 
-## 🧪 Testing the System
+## Testing the System
 
 ### Test Case 1: Text RAG
 
@@ -514,7 +514,7 @@ Question: "Show total sales by product category"
 - Timestamps accurate
 - No data loss
 
-## 🚧 Known Limitations and Future Work
+## Known Limitations and Future Work
 
 ### Current Limitations
 
@@ -534,7 +534,7 @@ Question: "Show total sales by product category"
 - [ ] Citation links to source documents
 - [ ] Multi-language support
 
-## 📚 Dependencies
+## Dependencies
 
 ```txt
 fastapi==0.109.0
@@ -548,7 +548,7 @@ numpy==1.26.3
 python-multipart==0.0.6
 ```
 
-## 🎓 Learning Checklist
+## Learning Checklist
 
 - [x] Implemented conversational memory with rolling window
 - [x] Built RAG evaluation framework with faithfulness scoring
@@ -561,7 +561,7 @@ python-multipart==0.0.6
 - [x] Added comprehensive error handling
 - [x] Logged all interactions for debugging
 
-## 🏆 Completion Criteria
+## Completion Criteria
 
 | Feature | Status |
 |---------|--------|
@@ -576,7 +576,7 @@ python-multipart==0.0.6
 | Logging | ✅ Implemented |
 | Documentation | ✅ Complete |
 
-## 📝 Next Steps
+## Next Steps
 
 1. **Deploy to Production**: Containerize with Docker
 2. **Add Monitoring**: Integrate Grafana + Prometheus
@@ -584,7 +584,7 @@ python-multipart==0.0.6
 4. **Security Hardening**: Add authentication, rate limiting
 5. **Multi-Agent Extension**: Build orchestration layer for Week 8
 
-## 🤝 Contributing
+## Contributing
 
 To extend this capstone:
 
@@ -594,7 +594,7 @@ To extend this capstone:
 4. Update UI in `ui.py`
 5. Document changes in this README
 
-## 📄 License
+## License
 
 This project is part of Week 7 GenAI internship curriculum.
 

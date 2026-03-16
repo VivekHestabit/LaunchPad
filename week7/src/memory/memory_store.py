@@ -30,7 +30,7 @@ class MemoryStore:
         }
 
         self.memory.append(entry)
-        self.memory = self.memory[-self.max_messages :]
+        self.memory = self.memory[-self.max_messages :] ## It only stores last 5 messages in the memory ....
         self._save()
 
     def get_memory(self) -> List[Dict]:

@@ -23,10 +23,10 @@ class ImageIngestor:
 
         self._ensure_collection()
 
-        self.caption_processor = BlipProcessor.from_pretrained(
+        self.caption_processor = BlipProcessor.from_pretrained( ## visual language model ... preprocessor prepare input token for model 
             "Salesforce/blip-image-captioning-base"
         )
-        self.caption_model = BlipForConditionalGeneration.from_pretrained(
+        self.caption_model = BlipForConditionalGeneration.from_pretrained( ## This reads image embedings and predict text tokens ... 
             "Salesforce/blip-image-captioning-base"
         )
 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
             count += 1
 
     if count == 0:
-        print("❌ NO IMAGES FOUND — NOTHING INGESTED")
+        print(" NO IMAGES FOUND — NOTHING INGESTED")
     else:
-        print(f"✅ {count} IMAGES INGESTED SUCCESSFULLY")
+        print(f"{count} IMAGES INGESTED SUCCESSFULLY")
 

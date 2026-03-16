@@ -78,7 +78,7 @@ def ask(question: str):
         result["context"]
     )
 
-    raw_scores = evaluator.evaluate(
+    raw_scores = evaluator.evaluate( ## This basically Gives the faithfulness , confidence and hallucination_risk ...
         refined_answer,
         result["context"]
     )
@@ -100,7 +100,7 @@ def ask(question: str):
 
 
 
-@app.post("/ask-image")
+@app.post("/ask-image") ## This is handling the text to image and image to text endpoints ... 
 def ask_image(
     question: str = Form(None),
     image: UploadFile = File(None),

@@ -29,4 +29,4 @@ class Reranker:
             reverse=True
         )
 
-        return reranked_results[:top_k]
+        return reranked_results[:top_k] ## On the basis of the rerank score we return the top-k searches 

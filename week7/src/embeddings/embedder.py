@@ -36,7 +36,7 @@ vectors = model.encode(
     texts,
     batch_size=32,
     show_progress_bar=True,
-    normalize_embeddings=True
+    normalize_embeddings=True ## Because cosine similarity search works better with the normalize vectors 
 )
 
 np.save(embeddings_file, vectors)
