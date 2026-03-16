@@ -27,6 +27,10 @@ def get_coder_tools() -> List[FunctionTool]:
 def get_analyst_tools() -> List[FunctionTool]:
     return [
         FunctionTool(
+            tools.get_csv_summary,
+            description="Get a high-level CSV summary: rows, columns, revenue stats, top products, top cities, and date range"
+        ),
+        FunctionTool(
             tools.read_csv,
             description="Read CSV data for analysis"
         ),

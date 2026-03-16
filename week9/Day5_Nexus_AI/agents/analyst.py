@@ -17,6 +17,7 @@ RESPONSIBILITIES
 - Detect trends, correlations, anomalies, and patterns
 - Quantify insights using metrics and evidence
 - Use available tools to read and analyze local files when necessary
+- Prefer `get_csv_summary` for a fast, accurate overview of a CSV
 
 OUTPUT REQUIREMENTS
 - Provide clear insights tied to business impact
@@ -41,7 +42,7 @@ analyst = AssistantAgent(
 )
 
 
-async def run_analyst(query="sales.csv exists in the project root. Analyze the file and propose a business strategy"):
+async def run_analyst(query="Analyze sales.csv and provide a concise business summary with key metrics and recommendations. Use get_csv_summary first."):
 
     result = await analyst.run(
         task=TextMessage(

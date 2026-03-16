@@ -57,16 +57,24 @@ class MemoryManager:
         self.vector = VectorStore()
         self.long_term = LongTermMemory()
 
-        self.llm = OpenAI(
-            api_key=os.environ["LLM_API_KEY"],
-            base_url="https://api.groq.com/openai/v1"
-        )
+        api_key = os.getenv("LLM_API_KEY") or os.getenv("GROQ_API_KEY")
+        base_url = os.getenv("LLM_BASE_URL", "https://api.groq.com/openai/v1")
+
+        self.llm = None
+        if api_key:
+            self.llm = OpenAI(
+                api_key=api_key,
+                base_url=base_url
+            )
 
     def _generate_id(self):
         return int(uuid.uuid4().int % (2**63 - 1))
 
 
     def summarize(self, text: str):
+
+        if self.llm is None:
+            return []
 
         prompt = f"""
 Extract LONG TERM USER FACTS.
@@ -160,6 +168,9 @@ RELEVANT FACTS
 
 
     def reconcile_memory(self, old_fact: str, new_fact: str):
+
+        if self.llm is None:
+            return {}
 
         prompt = f"""
 Compare two facts and determine their relationship.

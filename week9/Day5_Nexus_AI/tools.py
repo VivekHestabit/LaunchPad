@@ -3,11 +3,26 @@ import json
 import csv
 from typing import List, Dict, Any, Optional
 from datetime import datetime
+from pathlib import Path
+from config import BASE_DIR
+
+
+def _resolve_path(filepath: str) -> Path:
+    p = Path(filepath)
+    if p.is_absolute() or p.exists():
+        return p
+
+    candidate = BASE_DIR / filepath
+    if candidate.exists():
+        return candidate
+
+    return p
 
 
 def read_file(filepath: str) -> str:
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
+        resolved = _resolve_path(filepath)
+        with open(resolved, "r", encoding="utf-8") as f:
             return f.read()
     except Exception as e:
         return f"Error reading file: {str(e)}"
@@ -51,20 +66,19 @@ def list_directory(dirpath: str) -> List[str]:
 def read_csv(filepath: str) -> Dict[str, Any]:
     try:
         limit = 10
-
-        with open(filepath, "r", encoding="utf-8") as f:
+        resolved = _resolve_path(filepath)
+        with open(resolved, "r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
 
-            rows = []
-            for i, row in enumerate(reader):
-                if i >= limit:
-                    break
-                rows.append(dict(row))
+            rows = [dict(r) for r in reader]
+
+        preview = rows[:limit]
 
         return {
             "headers": reader.fieldnames,
-            "rows": rows,
-            "row_count": len(rows),
+            "rows": preview,
+            "row_count": len(preview),
+            "total_rows": len(rows),
             "note": f"Showing first {limit} rows only",
         }
 
@@ -97,7 +111,8 @@ def write_csv(filepath: str, data: List[Dict[str, Any]], headers: Optional[List[
 
 def analyze_csv_columns(filepath: str) -> Dict[str, Any]:
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
+        resolved = _resolve_path(filepath)
+        with open(resolved, "r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             rows = [dict(r) for r in reader]
             headers = reader.fieldnames
@@ -147,9 +162,97 @@ def analyze_csv_columns(filepath: str) -> Dict[str, Any]:
         return {"error": str(e)}
 
 
+def get_csv_summary(filepath: str) -> Dict[str, Any]:
+    try:
+        resolved = _resolve_path(filepath)
+
+        with open(resolved, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            rows = [dict(r) for r in reader]
+            headers = reader.fieldnames or []
+
+        if not headers:
+            return {"error": "No headers found in CSV"}
+
+        total_rows = len(rows)
+
+        def _to_float(value: str) -> Optional[float]:
+            try:
+                return float(value)
+            except Exception:
+                return None
+
+        revenue_total = 0.0
+        revenue_per_row = []
+        product_revenue: Dict[str, float] = {}
+        product_quantity: Dict[str, float] = {}
+        city_revenue: Dict[str, float] = {}
+        type_revenue: Dict[str, float] = {}
+        dates = []
+
+        for r in rows:
+            qty = _to_float((r.get("Quantity Ordered") or "").strip())
+            price = _to_float((r.get("Price") or "").strip())
+
+            if qty is not None and price is not None:
+                rev = qty * price
+                revenue_total += rev
+                revenue_per_row.append(rev)
+
+                product = (r.get("Product") or "").strip()
+                if product:
+                    product_revenue[product] = product_revenue.get(product, 0.0) + rev
+                    product_quantity[product] = product_quantity.get(product, 0.0) + qty
+
+                city = (r.get("City") or "").strip()
+                if city:
+                    city_revenue[city] = city_revenue.get(city, 0.0) + rev
+
+                product_type = (r.get("Product Type") or "").strip()
+                if product_type:
+                    type_revenue[product_type] = type_revenue.get(product_type, 0.0) + rev
+
+            date_str = (r.get("Order Date") or "").strip()
+            if date_str:
+                try:
+                    dates.append(datetime.strptime(date_str, "%Y-%m-%d").date())
+                except Exception:
+                    pass
+
+        avg_revenue = round(sum(revenue_per_row) / len(revenue_per_row), 2) if revenue_per_row else 0.0
+
+        def _top_n(d: Dict[str, float], n: int = 5) -> List[Dict[str, Any]]:
+            items = sorted(d.items(), key=lambda x: x[1], reverse=True)[:n]
+            return [{"name": k, "value": round(v, 2)} for k, v in items]
+
+        summary = {
+            "file": str(resolved),
+            "row_count": total_rows,
+            "columns": headers,
+            "date_range": {
+                "start": str(min(dates)) if dates else None,
+                "end": str(max(dates)) if dates else None,
+            },
+            "revenue": {
+                "total": round(revenue_total, 2),
+                "average_per_order": avg_revenue,
+            },
+            "top_products_by_revenue": _top_n(product_revenue, 5),
+            "top_products_by_quantity": _top_n(product_quantity, 5),
+            "top_cities_by_revenue": _top_n(city_revenue, 5),
+            "product_type_revenue": _top_n(type_revenue, 10),
+        }
+
+        return summary
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
 def read_json(filepath: str) -> Dict[str, Any]:
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
+        resolved = _resolve_path(filepath)
+        with open(resolved, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         return {"error": str(e)}

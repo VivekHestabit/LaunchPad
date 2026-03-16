@@ -1,11 +1,20 @@
+import os
 import sqlite3
 from datetime import datetime
+from pathlib import Path
+from config import BASE_DIR
 
 
 class LongTermMemory:
 
     def __init__(self, db_path="memory/long_term.db"):
-        self.conn = sqlite3.connect(db_path)
+        path = Path(db_path)
+        if not path.is_absolute():
+            path = BASE_DIR / path
+
+        os.makedirs(path.parent, exist_ok=True)
+
+        self.conn = sqlite3.connect(str(path))
         self._create_table()
 
     def _create_table(self):

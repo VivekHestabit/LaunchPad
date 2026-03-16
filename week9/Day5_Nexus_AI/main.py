@@ -3,6 +3,7 @@ import json
 import os
 import shutil
 import re
+import sys
 from autogen_agentchat.messages import TextMessage
 
 from agents.planner import planner, ExecutionPlan
@@ -100,6 +101,41 @@ async def run_nexus(query, clear_output=False):
 
 
 async def main():
+
+    args = sys.argv[1:]
+    clear = False
+
+    if "--clear" in args:
+        clear = True
+        args = [a for a in args if a != "--clear"]
+
+    if args:
+        query = " ".join(args).strip()
+        result = await run_nexus(query, clear)
+
+        print("\n" + "=" * 60)
+        print("EXECUTION COMPLETE")
+        print("=" * 60)
+
+        results = result.get("results", {})
+
+        for agent_name, agent_result in results.items():
+
+            if isinstance(agent_result, dict):
+                status = "✔" if agent_result.get("success") else "✘"
+                output = str(agent_result.get("output", ""))[:120]
+            else:
+                status = "✔"
+                output = str(agent_result)[:120]
+
+            print(f"  {status} {agent_name}: {output}")
+
+        print("=" * 60 + "\n")
+        return
+
+    if not sys.stdin.isatty():
+        print("No interactive input available. Pass a query as arguments, e.g. `python main.py \"Analyze sales.csv\"`.")
+        return
 
     print("\nNEXUS AI Interactive Shell")
     print("Type 'exit' or 'quit' to stop.\n")
