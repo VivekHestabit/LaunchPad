@@ -120,7 +120,7 @@ AGENT RESPONSE:
 {agent_msg}
 """
 
-        facts = self.summarize(conversation) ## Sumarizer -> returns (fact , category and importance ..)  
+        facts = self.summarize(conversation) ## Sumarizer -> fact object returns (fact , category and importance ..)  
 
         facts = [f for f in facts if f.get("importance", 0) >= 0.5]
 
