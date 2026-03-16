@@ -4,7 +4,7 @@ import numpy as np
 from datasets import load_from_disk, load_dataset, concatenate_datasets
 
 SEED = 42
-SAMPLES_PER_TYPE = 500
+SAMPLES_PER_TYPE = 500 ## From each Dataset taking 500 samples Each ..
 OUTPUT_DIR = "data"
 
 np.random.seed(SEED)
