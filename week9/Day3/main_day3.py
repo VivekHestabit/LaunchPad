@@ -54,7 +54,7 @@ Return ONLY JSON.
 
 
 planner_model = OpenAIChatCompletionClient(
-    model="openai/gpt-oss-20b",
+    model="openai/gpt-oss-120b",
     base_url="https://api.groq.com/openai/v1",
     api_key=os.getenv("LLM_API_KEY"),
     model_info={
@@ -76,7 +76,7 @@ PlannerAgent = AssistantAgent(
 
 
 summarizer_model = OpenAIChatCompletionClient(
-    model="openai/gpt-oss-20b",
+    model="openai/gpt-oss-120b",
     base_url="https://api.groq.com/openai/v1",
     api_key=os.getenv("LLM_API_KEY"),
     model_info={

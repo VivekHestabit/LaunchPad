@@ -34,7 +34,6 @@ STRICT RULES:
 - ALWAYS call the execution tool.
 - Return ONLY the real execution output.
 - If execution fails, return the full traceback.
-- Do NOT generate new code unless explicitly instructed.
 """,
     tools=[code_tool],
 )

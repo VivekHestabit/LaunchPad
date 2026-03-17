@@ -1,0 +1,11 @@
+autogen-agentchat>=0.4.0
+autogen-ext[openai]>=0.4.0
+autogen-core>=0.4.0
+openai>=1.0.0
+python-dotenv>=1.0.0
+pydantic
+httpx
+faiss-cpu
+sentence-transformers
+numpy
+pandas
